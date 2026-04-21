@@ -25,26 +25,6 @@ struct ContentView: View {
                         // Could use this to conditionally show + button
                     }
                 )
-                
-                // Native pull-to-refresh indicator overlay
-                VStack {
-                    Spacer()
-                    HStack {
-                        Spacer()
-                        Button(action: {
-                            NotificationCenter.default.post(name: .reloadWebView, object: nil)
-                        }) {
-                            Image(systemName: "arrow.clockwise.circle.fill")
-                                .font(.system(size: 24))
-                                .foregroundStyle(.primary)
-                                .padding()
-                                .background(.ultraThinMaterial)
-                                .clipShape(Circle())
-                        }
-                        .padding(.trailing, 20)
-                        .padding(.bottom, 30)
-                    }
-                }
             }
             .navigationTitle("Alex Enright")
             .navigationBarTitleDisplayMode(.inline)
@@ -83,56 +63,11 @@ struct ContentView: View {
                         Image(systemName: "ellipsis.circle")
                     }
                 }
-                
-                // Add button for community tab (simplified - always visible)
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        showCommunitySheet = true
-                    }) {
-                        Image(systemName: "plus.circle.fill")
-                            .font(.system(size: 22))
-                    }
-                }
             }
         }
-        .sheet(isPresented: $showSafari) {
+            .sheet(isPresented: $showSafari) {
             if let url = safariURL {
                 SafariView(url: url)
-            }
-        }
-        .sheet(isPresented: $showCommunitySheet) {
-            CommunityPostView(
-                onCameraTap: {
-                    showCommunitySheet = false
-                    imagePickerSource = .camera
-                    showImagePicker = true
-                },
-                onPhotoLibraryTap: {
-                    showCommunitySheet = false
-                    imagePickerSource = .photoLibrary
-                    showImagePicker = true
-                }
-            )
-        }
-        .sheet(isPresented: $showImagePicker) {
-            ImagePicker(sourceType: imagePickerSource, selectedImage: $selectedImage, onDismiss: {
-                showImagePicker = false
-                if selectedImage != nil {
-                    showImagePreview = true
-                }
-            })
-        }
-        .sheet(isPresented: $showImagePreview) {
-            if let image = selectedImage {
-                ImagePreviewView(image: image, onPost: { description in
-                    // Handle post upload
-                    uploadPost(image: image, description: description)
-                    showImagePreview = false
-                    selectedImage = nil
-                }, onCancel: {
-                    showImagePreview = false
-                    selectedImage = nil
-                })
             }
         }
         .onAppear {
@@ -477,8 +412,7 @@ struct ImagePreviewView: View {
             VStack(spacing: 20) {
                 Image(uiImage: image)
                     .resizable()
-                    .scaledToFit
-                    .cornerRadius(12)
+                    .scaledToFit ()                    .cornerRadius(12)
                     .padding()
                 
                 TextField("Add a description...", text: $description, axis: .vertical)

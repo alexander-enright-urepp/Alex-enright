@@ -132,8 +132,18 @@ export function AboutTab() {
       {/* Music */}
       <section className="mb-8">
         <h2 className="text-lg font-semibold mb-3">What I'm Listening To</h2>
-        <div className="bg-gray-100 rounded-xl overflow-hidden">
-          <iframe data-testid="embed-iframe" style={{borderRadius: '12px'}} src="https://open.spotify.com/embed/artist/65Ugrmba5ZkPNVxmHpnfFu?utm_source=generator" width="100%" height="352" frameBorder="0" allowFullScreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <div className="bg-gray-100 rounded-xl overflow-hidden" style={{ height: '152px' }}>
+          <iframe 
+            src="https://open.spotify.com/embed/artist/65Ugrmba5ZkPNVxmHpnfFu?utm_source=generator&theme=0" 
+            width="100%" 
+            height="152" 
+            frameBorder="0" 
+            allowTransparency={true}
+            allow="encrypted-media"
+            loading="lazy"
+            title="Spotify"
+            style={{ borderRadius: '12px' }}
+          />
         </div>
       </section>
 
