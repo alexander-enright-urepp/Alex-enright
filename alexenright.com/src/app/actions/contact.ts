@@ -13,6 +13,7 @@ interface ContactFormData {
 export async function submitContactForm(data: ContactFormData) {
   const supabase = createClient()
   
+  // @ts-ignore - Table exists in database but types not yet generated
   const { error } = await supabase
     .from('contact_submissions')
     .insert({
