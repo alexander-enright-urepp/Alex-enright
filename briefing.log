@@ -1,0 +1,230 @@
+[0;34m╔════════════════════════════════════════════════╗[0m
+[0;34m║[0m  ☀️ [1;33mGOOD MORNING![0m Today is [0;32mMonday, March 09[0m   ☀️  [0;34m║[0m
+[0;34m╚════════════════════════════════════════════════╝[0m
+
+[1;33m🌤️ WEATHER FOR Sacramento,California:[0m
+   ☀️ Clear +48°F (+46°F) ↓5mph 96%
+
+[0;34m📰 TOP HEADLINES:[0m
+📰 NPR Topics: News
+📰 Iran picks new leader. And, Trump won't sign bills until Congress overhauls voting
+📰 Chimps' taste for fermented fruit hints at origins of human love of alcohol
+📰 Iran attacks Israel and Gulf states after naming a new supreme leader on Day 10 of war
+📰 World shares tumble as Iran war pushes crude prices over $110 a barrel
+
+[0;32m💪 YOUR DAILY TARGETS:[0m
+   🔥 Calories: Stay under [0;31m2,000[0m
+   🥩 Protein: Hit [0;32m150g[0m
+   💰 Paycheck reminder: [1;33m$800[0m
+
+✅ Email sent successfully!
+[0;32m✅ Briefing sent to alexenrightt@gmail.com![0m
+==========================================
+  Morning Briefing - Tuesday, March 10
+==========================================
+
+Weather: Weather unavailable
+
+News:
+NPR Topics: News
+Trump gives mixed signals on Iran war. And, how Epstein built ties to scientists
+'Pro-worker AI,' streaming fatalities, and other fascinating new economic studies
+GLP-1s have transformed weight loss and diabetes. Is addiction next?
+Trump gives mixed messages about when the war with Iran will end
+
+Targets: 2000 cal / 150g protein / $800
+✅ Email sent!
+✅ Briefing sent!
+==========================================
+  Morning Briefing - Wednesday, March 11
+==========================================
+
+Weather: Clear +47°F (+44°F) ↘5mph 74%
+
+News:
+NPR Topics: News
+Greetings from a Shanghai temple where you can ward off bad luck in the Year of the Horse
+Countries agree to historic release of stockpiled oil to ease the global disruption
+Americans skeptical of the Iran war, poll says. And, DOJ gives guns back to felons
+U.S. attacks Iranian mine-laying vessels near Hormuz on Day 12 of war
+
+Targets: 2000 cal / 150g protein / $800
+✅ Email sent!
+✅ Briefing sent!
+==========================================
+  Morning Briefing - Thursday, March 12
+==========================================
+
+Weather: Clear +45°F (+43°F) ↓4mph 100%
+
+News:
+NPR Topics: News
+Chilean Smiljan Radić Clarke wins architecture's highest honor
+El Niño is set to take hold this summer, driving up global temperatures
+U.S. investigates strike on Iranian school as the war sparks a global oil crisis
+'Songs from the Hole': The story behind JJ'88's documentary and visual album
+
+Targets: 2000 cal / 150g protein / $800
+✅ Email sent!
+✅ Briefing sent!
+==========================================
+  Morning Briefing - Friday, March 13
+==========================================
+
+Weather: Partly cloudy +46°F (+45°F) ↓4mph 96%
+
+News:
+NPR Topics: News
+Giant robots battle it out in Detroit's Robowar
+FBI investigates attacks in Michigan and Virginia. And, Senate passes housing bill
+Countries are negotiating rules to mine the deep sea. The U.S. is pushing ahead alone
+4 confirmed dead after U.S. military aircraft goes down in Iraq
+
+Targets: 2000 cal / 150g protein / $800
+✅ Email sent!
+✅ Briefing sent!
+==========================================
+  Morning Briefing - Sunday, March 15
+==========================================
+
+Weather: Weather unavailable
+
+News:
+
+
+Targets: 2000 cal / 150g protein / $800
+Traceback (most recent call last):
+  File "/Users/alexanderenright/.openclaw/workspace/send_email.py", line 66, in <module>
+    send_briefing(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], html_file)
+  File "/Users/alexanderenright/.openclaw/workspace/send_email.py", line 57, in send_briefing
+    server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/smtplib.py", line 255, in __init__
+    (code, msg) = self.connect(host, port)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/smtplib.py", line 341, in connect
+    self.sock = self._get_socket(host, port, self.timeout)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/smtplib.py", line 312, in _get_socket
+    return socket.create_connection((host, port), timeout,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/socket.py", line 822, in create_connection
+    for res in getaddrinfo(host, port, 0, SOCK_STREAM):
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/socket.py", line 953, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+❌ Email failed.
+==========================================
+  Morning Briefing - Wednesday, March 18
+==========================================
+
+Weather: Weather unavailable
+
+News:
+NPR Topics: News
+Greetings from Nyeri, Kenya, where grandmothers help coach the next generation
+A mysterious floral artist has taken over the New York Botanical Garden
+These roaches form exclusive long-term relationships after eating each other's wings
+The Fed to meet about interest rates. And, Sen. Mullin faces DHS confirmation hearing
+
+Targets: 2000 cal / 150g protein / $800
+✅ Email sent!
+✅ Briefing sent!
+==========================================
+  Morning Briefing - Thursday, March 19
+==========================================
+
+Weather: Mist +14°C (+14°C) ↓10km/h 100%
+
+News:
+NPR Topics: News
+The SAVE Act faces long odds in the Senate. GOP-led states are picking up the cause
+Fear, defiance, and anger: Iranians describe life under bombardment
+As Pakistan and Afghanistan declare truce, civilians in Kabul count the cost of war
+Israel and Iran attack gas facilities. And, Cesar Chavez accused of sexual abuse, rape
+
+Targets: 2000 cal / 150g protein / $800
+✅ Email sent!
+✅ Briefing sent!
+==========================================
+  Morning Briefing - Friday, March 20
+==========================================
+
+Weather: Fog +13°C (+13°C) ↓4km/h 96%
+
+News:
+NPR Topics: News
+He's one reason why aid cuts weren't as dire for the HIV population as predicted
+Trump is dismantling democracy, reports find. And, Treasury to take over student loans
+Israel launches more strikes on Tehran as Iran continues attacks on Gulf oil facilities
+From mall to torture site: Venezuela debates El Helicoide prison's future
+
+Targets: 2000 cal / 150g protein / $800
+✅ Email sent!
+✅ Briefing sent!
+==========================================
+  Morning Briefing - Saturday, March 21
+==========================================
+
+Weather: Weather unavailable
+
+News:
+
+
+Targets: 2000 cal / 150g protein / $800
+Traceback (most recent call last):
+  File "/Users/alexanderenright/.openclaw/workspace/send_email.py", line 66, in <module>
+    send_briefing(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], html_file)
+  File "/Users/alexanderenright/.openclaw/workspace/send_email.py", line 57, in send_briefing
+    server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/smtplib.py", line 255, in __init__
+    (code, msg) = self.connect(host, port)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/smtplib.py", line 341, in connect
+    self.sock = self._get_socket(host, port, self.timeout)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/smtplib.py", line 312, in _get_socket
+    return socket.create_connection((host, port), timeout,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/socket.py", line 822, in create_connection
+    for res in getaddrinfo(host, port, 0, SOCK_STREAM):
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/socket.py", line 953, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+❌ Email failed.
+==========================================
+  Morning Briefing - Sunday, March 22
+==========================================
+
+Weather: Weather unavailable
+
+News:
+
+
+Targets: 2000 cal / 150g protein / $800
+Traceback (most recent call last):
+  File "/Users/alexanderenright/.openclaw/workspace/send_email.py", line 66, in <module>
+    send_briefing(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], html_file)
+  File "/Users/alexanderenright/.openclaw/workspace/send_email.py", line 57, in send_briefing
+    server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/smtplib.py", line 255, in __init__
+    (code, msg) = self.connect(host, port)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/smtplib.py", line 341, in connect
+    self.sock = self._get_socket(host, port, self.timeout)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/smtplib.py", line 312, in _get_socket
+    return socket.create_connection((host, port), timeout,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/socket.py", line 822, in create_connection
+    for res in getaddrinfo(host, port, 0, SOCK_STREAM):
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/socket.py", line 953, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+❌ Email failed.
+==========================================
+  Morning Briefing - Monday, March 23
+==========================================
+
+Weather: Clear +12°C (+12°C) ↗4km/h 83%
+
+News:
+NPR Topics: News
+Supreme Court declines to review press freedom case
+Voice of America staffers sue, alleging Kari Lake put on propaganda
+Trump delays strikes on Iran's power plants for 5 days. And, ICE deploys to airports
+Trump delays striking Iran's power plants for 5 days during 'productive conversations'
+
+Targets: 2000 cal / 150g protein / $800
+✅ Email sent!
+✅ Briefing sent!

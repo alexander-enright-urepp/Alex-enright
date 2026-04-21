@@ -1,0 +1,149 @@
+==========================================
+  DAILY MOTIVATION - Monday, March 09
+==========================================
+
+The best way to predict the future is to create it. - Peter Drucker
+
+✅ Email sent with text and audio!
+&#9989; Motivation sent!
+==========================================
+  DAILY MOTIVATION - Tuesday, March 10
+==========================================
+
+You miss 100% of the shots you don't take. - Wayne Gretzky
+
+✅ Email sent!
+✅ Motivation sent!
+==========================================
+  DAILY MOTIVATION - Wednesday, March 11
+==========================================
+
+Your time is limited, don't waste it living someone else's life. - Steve Jobs
+
+✅ Email sent!
+✅ Motivation sent!
+==========================================
+  DAILY MOTIVATION - Thursday, March 12
+==========================================
+
+Believe you can and you're halfway there. - Theodore Roosevelt
+
+✅ Email sent!
+✅ Motivation sent!
+==========================================
+  DAILY MOTIVATION - Friday, March 13
+==========================================
+
+Your time is limited, don't waste it living someone else's life. - Steve Jobs
+
+✅ Email sent!
+✅ Motivation sent!
+==========================================
+  DAILY MOTIVATION - Saturday, March 14
+==========================================
+
+It does not matter how slowly you go as long as you do not stop. - Confucius
+
+Traceback (most recent call last):
+  File "/Users/alexanderenright/.openclaw/workspace/send_email.py", line 66, in <module>
+    send_briefing(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], html_file)
+  File "/Users/alexanderenright/.openclaw/workspace/send_email.py", line 57, in send_briefing
+    server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/smtplib.py", line 255, in __init__
+    (code, msg) = self.connect(host, port)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/smtplib.py", line 341, in connect
+    self.sock = self._get_socket(host, port, self.timeout)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/smtplib.py", line 312, in _get_socket
+    return socket.create_connection((host, port), timeout,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/socket.py", line 822, in create_connection
+    for res in getaddrinfo(host, port, 0, SOCK_STREAM):
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/socket.py", line 953, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+❌ Email failed.
+==========================================
+  DAILY MOTIVATION - Tuesday, March 17
+==========================================
+
+Hardships often prepare ordinary people for an extraordinary destiny. - C.S. Lewis
+
+✅ Email sent!
+✅ Motivation sent!
+==========================================
+  DAILY MOTIVATION - Wednesday, March 18
+==========================================
+
+Don't watch the clock; do what it does. Keep going. - Sam Levenson
+
+✅ Email sent!
+✅ Motivation sent!
+==========================================
+  DAILY MOTIVATION - Thursday, March 19
+==========================================
+
+Everything you've ever wanted is on the other side of fear. - George Addair
+
+✅ Email sent!
+✅ Motivation sent!
+==========================================
+  DAILY MOTIVATION - Friday, March 20
+==========================================
+
+The best way to predict the future is to create it. - Peter Drucker
+
+✅ Email sent!
+✅ Motivation sent!
+==========================================
+  DAILY MOTIVATION - Saturday, March 21
+==========================================
+
+The best way to predict the future is to create it. - Peter Drucker
+
+Traceback (most recent call last):
+  File "/Users/alexanderenright/.openclaw/workspace/send_email.py", line 66, in <module>
+    send_briefing(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], html_file)
+  File "/Users/alexanderenright/.openclaw/workspace/send_email.py", line 57, in send_briefing
+    server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/smtplib.py", line 255, in __init__
+    (code, msg) = self.connect(host, port)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/smtplib.py", line 341, in connect
+    self.sock = self._get_socket(host, port, self.timeout)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/smtplib.py", line 312, in _get_socket
+    return socket.create_connection((host, port), timeout,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/socket.py", line 822, in create_connection
+    for res in getaddrinfo(host, port, 0, SOCK_STREAM):
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/socket.py", line 953, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+❌ Email failed.
+==========================================
+  DAILY MOTIVATION - Sunday, March 22
+==========================================
+
+Success is not final, failure is not fatal: it is the courage to continue that counts. - Winston Churchill
+
+Traceback (most recent call last):
+  File "/Users/alexanderenright/.openclaw/workspace/send_email.py", line 66, in <module>
+    send_briefing(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], html_file)
+  File "/Users/alexanderenright/.openclaw/workspace/send_email.py", line 57, in send_briefing
+    server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/smtplib.py", line 255, in __init__
+    (code, msg) = self.connect(host, port)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/smtplib.py", line 341, in connect
+    self.sock = self._get_socket(host, port, self.timeout)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/smtplib.py", line 312, in _get_socket
+    return socket.create_connection((host, port), timeout,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/socket.py", line 822, in create_connection
+    for res in getaddrinfo(host, port, 0, SOCK_STREAM):
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/socket.py", line 953, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+❌ Email failed.
+==========================================
+  DAILY MOTIVATION - Monday, March 23
+==========================================
+
+You miss 100% of the shots you don't take. - Wayne Gretzky
+
+✅ Email sent!
+✅ Motivation sent!

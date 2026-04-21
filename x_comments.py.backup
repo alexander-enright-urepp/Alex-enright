@@ -1,0 +1,147 @@
+#!/usr/bin/env python3
+import json, os, random
+from datetime import datetime
+import tweepy
+
+TOP_ACCOUNTS = [
+    "ESPN", "SportsCenter", "NBA", "NFL", "MLB", "BleacherReport",
+    "Forbes", "Inc", "garyvee", "naval", "paulg", "elonmusk",
+    "BillGates", "Oprah", "KimKardashian", "Cristiano", "lebronjames"
+]
+
+SMART_COMMENTS = [
+TOP_ACCOUNTS = [
+    # Sports - Major Networks & Leagues
+    "ESPN", "SportsCenter", "NBA", "NFL", "MLB", "NHL", "BleacherReport", 
+    "FirstTake", "RealSkipBayless", "ShannonSharpe", "AdamSchefter", "wojespn",
+    "ESPNNBA", "NFLonFOX", "NBAonTNT",
+    
+    # Sports - Star Players
+    "KingJames", "StephenCurry30", "KDTrey5", "Giannis_An34", "KyrieIrving",
+    "Cristiano", "KMbappe", "neymarjr", "leomessi",
+    "TigerWoods", "serenawilliams", "DjokerNole", "CocoGauff",
+    
+    # Sports - Teams
+    "Lakers", "Warriors", "celtics", "chicagobulls",
+    "mancity", "realmadrid", "FCBarcelona", "ManUtd", "LFC",
+    "NYYankees", "RedSox", "Dodgers", "Cubs",
+    
+    # Business & Entrepreneurship
+    "Forbes", "Inc", "FastCompany", "Entrepreneur", "BusinessInsider",
+    "garyvee", "naval", "paulg", "sama", "reidhoffman", "elonmusk",
+    "BillGates", "JeffBezos", "tim_cook", "satyanadella", "sundarpichai",
+    "Oprah", "MarkCuban", "BarbaraCorcoran", "DaymondJohn", "kevinolearytv",
+    "GrantCardone", "TonyRobbins", "RobinSharma", "BrendonBurchard",
+    "WarrenBuffett", "RayDalio",
+    
+    # Tech & VC
+    "TechCrunch", "TheVerge", "Wired", "mashable", "arstechnica",
+    "a16z", "sequoia", "ycombinator", "FirstRound", "Benchmark",
+    "jason", "sacca", "fredwilson", "pmarca", "bhorowitz", "bgurley",
+    
+    # Entertainment & Media
+    "Netflix", "PrimeVideo", "disneyplus", "HBOMax", "hulu",
+    "TheRock", "KevinHart4real", "chrisrock",
+    "rihanna", "Beyonce", "taylorswift13", "arianagrande",
+    "Drake", "kanyewest", "KimKardashian", "KylieJenner",
+    
+    # News & Thought Leaders
+    "CNN", "BBCWorld", "Reuters", "AP", "nytimes", "washingtonpost",
+    "BarackObama", "HillaryClinton", "AOC",
+    "timoreilly", "cdixon", "balajis", "morganhousel"
+]
+    "Someone get this person a raise immediately 💰",
+    "This is the content that keeps me coming back here daily 🙌",
+    "Reading this felt like a masterclass. Thank you for sharing 🎓",
+    "The attention to detail here is *chef's kiss* 👨‍🍳",
+    "This is why you're in my top follows. Pure value 🔥",
+    "Unpopular opinion: this should be mandatory reading 📚",
+    "The way you broke this down deserves its own thread 🧵",
+    "This perspective just shifted my entire approach. Thank you 🙏",
+    "Not all heroes wear capes. Some just post content like this 🦸",
+    "Screenshotting this before it blows up 📸",
+    "The algorithm did its job today by showing me this ✨",
+    "This is the quality content I signed up for. More of this please 🙏",
+    "If knowledge is power, consider me charged up after reading this ⚡",
+    "This hit different. In the best way possible 💯",
+    "The timing of this post couldn't be better. Right on cue 🎯",
+    "This just became my new favorite post of the day 🏆",
+    "The depth here is what separates the pros from the amateurs 🎓",
+    "Bookmarked for future reference. This is gold 🏅",
+    "How do you consistently deliver content this good? Asking for a friend 🤔",
+    "This is the definition of adding value to the timeline 💎",
+    "Mind = blown. Simple as that 🤯",
+    "The clarity in this post is unmatched. Well done 👏",
+    "This just changed how I'm approaching my day. Thank you for this 🙏"
+]
+
+def load_creds():
+    with open(os.path.expanduser("~/.openclaw/config.json")) as f:
+        return json.load(f)["twitter"]
+
+def get_client():
+    creds = load_creds()
+    return tweepy.Client(
+        consumer_key=creds["apiKey"],
+        consumer_secret=creds["apiSecret"],
+        access_token=creds["accessToken"],
+        access_token_secret=creds["accessSecret"]
+    )
+
+def post_comments():
+    client = get_client()
+    posted = 0
+    max_attempts = 15
+    attempts = 0
+    
+    print(f"[{datetime.now()}] Starting comment batch...")
+    
+    while posted < 10 and attempts < max_attempts:
+        attempts += 1
+        target = random.choice(TOP_ACCOUNTS)
+        
+        try:
+            # Get user's recent tweets
+            user = client.get_user(username=target)
+            if not user.data:
+                continue
+                
+            tweets = client.get_users_tweets(
+                id=user.data.id, 
+                max_results=5,
+                exclude=['retweets', 'replies']
+            )
+            
+            if not tweets.data:
+                continue
+            
+            # Pick a random recent tweet
+            tweet = random.choice(tweets.data)
+            
+            # Check we haven't already replied
+            # (In production, you'd track this in a file)
+            
+            # Generate comment
+            comment = random.choice(SMART_COMMENTS)
+            
+            # Post reply
+            response = client.create_tweet(
+                text=comment,
+                in_reply_to_tweet_id=tweet.id
+            )
+            
+            posted += 1
+            print(f"[{datetime.now()}] Posted {posted}/10: Reply to @{target} - '{comment[:40]}...'")
+            
+            # Small delay to avoid rate limits
+            import time
+            time.sleep(2)
+            
+        except Exception as e:
+            print(f"[{datetime.now()}] Error with @{target}: {str(e)[:50]}")
+            continue
+    
+    print(f"[{datetime.now()}] Batch complete: {posted}/10 comments posted")
+
+if __name__ == "__main__":
+    post_comments()

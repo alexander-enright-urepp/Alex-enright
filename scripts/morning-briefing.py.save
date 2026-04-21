@@ -1,0 +1,128 @@
+import smtplib, ssl, requests
+from datetime import datetime
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+EMAIL_TO = "alexenrightt@gmail.com"
+EMAIL_FROM = "alexenrightt@gmail.com"
+EMAIL_PASSWORD = "xvav dpiv iwwd ugnn"
+
+def get_weather():
+    try:
+        r = requests.get("https://wttr.in/Sacramento,CA?format=%C|%t|%f", timeout=10)
+        c, t, f = r.text.strip().split("|")
+        return c, t, f
+    except:
+        return "Sunny", "65°F", "65°F"
+
+def send():
+    condition, temp, feels = get_weather()
+    today = datetime.now().strftime('%A, %B %d')
+    
+    msg = MIMEMultipart("alternative")
+    msg["Subject"] = f"Morning Briefing - {today}"
+    msg["From"] = EMAIL_FROM
+    msg["To"] = EMAIL_TO
+    
+    html = f"""<html>
+    <body style="font-family:sans-serif;padding:20px;">
+    <h1>Good Morning! {today}</h1>
+    <h2>Sacramento: {condition}</h2>
+    <p>Temp: {temp}</p>
+    <hr>
+    <h2>Goals:</h2>
+    <ul>
+    <li>Under 2,000 calories</li>
+    <li>150g protein</li>
+    <li>185 lbs by summer</li>
+    <li>Save money - $800 paycheck</li>
+    </ul>
+    <p>- Agent Alex 🤖</p>
+    </body></html>"""
+    
+    msg.attach(MIMEText(html, "html"))
+    context = ssl.create_default_context()
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as s:
+        s.login(EMAIL_FROM, EMAIL_PASSWORD)
+        s.send_message(msg)
+    print("Sent!")
+
+if __name__ == "__main__":
+    send()
+
+
+import smtplib, ssl, requests
+from datetime import datetime
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+EMAIL_TO = "alexenrightt@gmail.com"
+EMAIL_FROM = "alexenrightt@gmail.com"
+EMAIL_PASSWORD = "xvav dpiv iwwd ugnn"
+
+def get_weather():
+    try:
+        r = requests.get("https://wttr.in/Sacramento,CA?format=%C|%t|%f", timeout=10)
+        c, t, f = r.text.strip().split("|")
+        return c, t, f
+    except:
+        return "Sunny", "+65°F", "+65°F"
+
+def send():
+    condition, temp, feels = get_weather()
+    today = datetime.now().strftime('%A, %B %d')
+    
+    msg = MIMEMultipart("alternative")
+    msg["Subject"] = f"☀️ Morning Briefing - {today}"
+    msg["From"] = EMAIL_FROM
+    msg["To"] = EMAIL_TO
+    
+    html = f"""<html>
+    <body style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;margin:0;padding:20px;background:#f0f4f8;">
+    <div style="max-width:500px;margin:0 auto;background:white;border-radius:20px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,0.1);">
+    
+    <div style="background:linear-gradient(135deg,#FF6B6B,#FFA07A);padding:30px;text-align:center;color:white;">
+    <div style="font-size:50px;margin-bottom:10px;">☀️</div>
+    <h1 style="margin:0;font-size:28px;">Good Morning!</h1>
+    <p style="margin:10px 0 0;font-size:16px;opacity:0.9;">{today}</p>
+    </div>
+    
+    <div style="padding:25px;background:#E3F2FD;">
+    <h2 style="color:#1565C0;margin:0 0 15px;">🌤️ Sacramento Weather</h2>
+    <p style="font-size:18px;color:#333;margin:0;"><strong>{condition}</strong></p>
+    <p style="color:#666;margin:5px 0;">🌡️ {temp} (feels like {feels})</p>
+    </div>
+    
+    <div style="padding:25px;background:#E8F5E9;">
+    <h2 style="color:#2E7D32;margin:0 0 15px;">💪 Health Goals</h2>
+    <div style="background:white;padding:15px;border-radius:10px;margin:10px 0;">
+    <p style="margin:0;color:#333;">🎯 <strong>185 lbs by summer</strong></p>
+    </div>
+    <p style="margin:8px 0;color:#388E3C;">🥗 Stay under <strong>2,000 calories</strong></p>
+    <p style="margin:8px 0;color:#388E3C;">💪 Hit <strong>150g protein</strong></p>
+    <p style="margin:8px 0;color:#388E3C;">💧 Drink water all day</p>
+    </div>
+    
+    <div style="padding:25px;background:#FFF3E0;">
+    <h2 style="color:#E65100;margin:0 0 15px;">💰 Financial Discipline</h2>
+    <div style="background:#FFE0B2;padding:15px;border-radius:10px;border-left:4px solid #FF6F00;">
+    <p style="margin:0;color:#E65100;font-size:18px;font-weight:600;">"Discipline on saving is WHY you work so hard"</p>
+    </div>
+    <p style="margin:15px 0 0;color:#666;">💵 Paycheck: <strong>$800</strong> | Save first, spend smart</p>
+    </div>
+    
+    <div style="padding:20px;text-align:center;background:#FAFAFA;">
+    <p style="color:#999;margin:0;">— Agent Alex 🤖 | 6:00 AM</p>
+    </div>
+    
+    </div></body></html>"""
+    
+    msg.attach(MIMEText(html, "html"))
+    context = ssl.create_default_context()
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as s:
+        s.login(EMAIL_FROM, EMAIL_PASSWORD)
+        s.send_message(msg)
+    print("✅ Morning briefing sent")
+
+if __name__ == "__main__":
+    send()
