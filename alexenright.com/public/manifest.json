@@ -1,0 +1,22 @@
+{
+  "name": "Alex Enright",
+  "short_name": "Alex",
+  "description": "Developer, Creator, Builder",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#DC2626",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/favicon%2032.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon%20180.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
