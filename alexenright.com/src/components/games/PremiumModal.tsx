@@ -8,31 +8,39 @@ interface PremiumModalProps {
   game: Game
   onClose: () => void
   onUnlock: () => void
+  premiumGames?: string[]
 }
 
-export function PremiumModal({ game, onClose, onUnlock }: PremiumModalProps) {
+export function PremiumModal({ game, onClose, onUnlock, premiumGames = [] }: PremiumModalProps) {
   return (
     <Modal
       isOpen={true}
       onClose={onClose}
-      title="Premium Game"
+      title="⭐ Premium Games"
     >
       <div className="text-center">
         <div className="text-6xl mb-4">{game.icon}</div>
-        <h3 className="text-xl font-semibold mb-2">{game.name}</h3>
-        <p className="text-gray-600 mb-6">
-          This is a premium game. Unlock it to play!
+        <h3 className="text-xl font-semibold mb-2">Unlock All Premium Games</h3>
+        <p className="text-gray-600 mb-4">
+          Get instant access to all premium games:
         </p>
+        
+        <div className="flex flex-wrap justify-center gap-2 mb-4">
+          <span className="px-2 py-1 bg-gray-100 rounded-full text-sm">Tic Tac Toe</span>
+          <span className="px-2 py-1 bg-gray-100 rounded-full text-sm">Snake</span>
+          <span className="px-2 py-1 bg-gray-100 rounded-full text-sm">Fortune Cookie</span>
+          <span className="px-2 py-1 bg-gray-100 rounded-full text-sm">Slot Machine</span>
+          <span className="px-2 py-1 bg-gray-100 rounded-full text-sm">Hangman</span>
+        </div>
 
-        <div className="bg-gray-50 rounded-xl p-4 mb-6">
-          <p className="text-sm text-gray-500 mb-2">Unlock Premium Games</p>
-          <p className="text-3xl font-bold">$2.99</p>
-          <p className="text-xs text-gray-400 mt-1">One-time purchase</p>
+        <div className="bg-gradient-to-r from-accent/10 to-accent/5 rounded-xl p-4 mb-6">
+          <p className="text-3xl font-bold text-accent">$2.99</p>
+          <p className="text-xs text-gray-500 mt-1">One-time purchase • No subscriptions</p>
         </div>
 
         <div className="space-y-2">
           <Button onClick={onUnlock} size="lg" className="w-full">
-            Unlock Now
+            Unlock All Games
           </Button>
           <Button onClick={onClose} variant="ghost" className="w-full">
             Maybe Later
@@ -40,8 +48,7 @@ export function PremiumModal({ game, onClose, onUnlock }: PremiumModalProps) {
         </div>
 
         <p className="text-xs text-gray-400 mt-4">
-          Note: IAP integration with Capacitor coming soon.
-          This is a demo modal.
+          Secure payment via Apple App Store.
         </p>
       </div>
     </Modal>

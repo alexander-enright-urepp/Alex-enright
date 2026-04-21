@@ -15,7 +15,7 @@ export type DailyPostWithLikes = DailyPost & {
 }
 
 // Game types
-export type GameType = 'coin-flip' | 'dice-roll' | 'rps' | 'tic-tac-toe' | 'snake'
+export type GameType = 'coin-flip' | 'dice-roll' | 'rps' | 'tic-tac-toe' | 'snake' | 'magic8ball' | 'fortune-cookie' | 'slot-machine' | 'hangman'
 
 export interface Game {
   id: GameType
