@@ -242,6 +242,14 @@ struct WebView: UIViewRepresentable {
         
         func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
             if let url = navigationAction.request.url {
+                let urlString = url.absoluteString
+                
+                // Allow Spotify embeds to load in webview
+                if urlString.contains("spotify.com/embed") || urlString.contains("open.spotify.com") {
+                    decisionHandler(.allow)
+                    return
+                }
+                
                 // Handle external links - open in-app instead of externally
                 if let host = url.host, !host.contains("alexenright.com") {
                     // Open external links in-app sheet instead of external Safari
