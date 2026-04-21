@@ -111,6 +111,8 @@ export async function getJobListings() {
 export async function submitJobListing(formData: FormData) {
   const supabase = createClient()
   
+  const durationStart = formData.get('durationStart') as string
+  
   const { error } = await supabase
     .from('job_listings')
     .insert({
@@ -120,8 +122,7 @@ export async function submitJobListing(formData: FormData) {
       description: formData.get('description'),
       salary_range: formData.get('salaryRange') || null,
       apply_url: formData.get('applyUrl') || null,
-      duration_start: formData.get('durationStart') || null,
-      duration_end: formData.get('durationEnd') || null,
+      duration_start: durationStart ? `${durationStart}T00:00:00Z` : null,
       approved: false,
     })
 

@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
 import { formatRelativeDate } from '@/lib/utils'
+import { Heart } from '@/components/icons/Heart'
 
 type TabView = 'posts' | 'jobs' | 'submit-job'
 
@@ -25,7 +26,6 @@ export function CommunityTab() {
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    // Generate or retrieve anonymous ID for likes
     const storedId = localStorage.getItem('anon_id')
     if (storedId) {
       setAnonId(storedId)
@@ -87,7 +87,7 @@ export function CommunityTab() {
     }
   }
 
-  const handleLike = async (postId: string) => {
+  const handleLike = async (postId: string, hasLiked: boolean) => {
     const result = await likePost(postId, anonId)
     if (result.success) {
       if (result.liked) {
@@ -119,7 +119,6 @@ export function CommunityTab() {
 
   return (
     <div className="p-4">
-      {/* Post Success Modal */}
       <Modal
         isOpen={showPostSuccessModal}
         onClose={() => setShowPostSuccessModal(false)}
@@ -167,7 +166,6 @@ export function CommunityTab() {
         ))}
       </div>
 
-      {/* Posts View */}
       {activeView === 'posts' && (
         <div className="space-y-4">
           <form onSubmit={handlePostSubmit} className="mb-6 space-y-3">
@@ -213,43 +211,49 @@ export function CommunityTab() {
           </form>
 
           {posts.map((post: any) => (
-            <div key={post.id} className="bg-white rounded-xl border border-gray-200 p-4">
-              {post.image_url && <img src={post.image_url} className="w-full h-64 object-cover rounded-lg mb-3" />}
-              <p className="text-gray-900">{post.content}</p>
-              <div className="flex items-center justify-between mt-3">
-                <span className="text-sm text-gray-500">{formatRelativeDate(post.created_at)}</span>
-                <button
-                  onClick={() => handleLike(post.id)}
-                  className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm ${
-                    likedPosts.has(post.id) ? 'bg-red-100 text-red-600' : 'bg-gray-100 text-gray-600'
-                  }`}
-                >
-                  {likedPosts.has(post.id) ? '❤️' : '🤍'} {post.likes_count || 0}
-                </button>
+            <div key={post.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+              {post.image_url && (
+                <img src={post.image_url} className="w-full h-64 object-cover" />
+              )}
+              <div className="p-4">
+                <p className="text-gray-900 whitespace-pre-wrap">{post.content}</p>
+                <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
+                  <span className="text-sm text-gray-500">{formatRelativeDate(post.created_at)}</span>
+                  <button
+                    onClick={() => handleLike(post.id, likedPosts.has(post.id))}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-colors ${
+                      likedPosts.has(post.id)
+                        ? 'text-red-600 bg-red-50'
+                        : 'text-gray-500 hover:text-red-600 hover:bg-red-50'
+                    }`}
+                  >
+                    <Heart filled={likedPosts.has(post.id)} className="w-5 h-5" />
+                    <span className="font-medium">{post.likes_count || 0}</span>
+                  </button>
+                </div>
               </div>
             </div>
           ))}
         </div>
       )}
 
-      {/* Jobs View */}
       {activeView === 'jobs' && (
         <div className="space-y-4">
           {jobs.map((job: any) => (
             <div key={job.id} className="bg-white rounded-xl border p-4">
-              <h3 className="font-semibold">{job.title}</h3>
-              <p className="text-accent">{job.company}</p>
+              <h3 className="font-semibold text-lg">{job.title}</h3>
+              <p className="text-accent font-medium">{job.company}</p>
               <p className="text-sm text-gray-600">{job.location}</p>
+              {job.salary_range && <p className="text-green-600 text-sm font-medium">{job.salary_range}</p>}
+              <p className="text-gray-700 mt-2 text-sm">{job.description}</p>
               <p className="text-xs text-gray-400 mt-2">
-                Listed: {new Date(job.listing_date).toLocaleDateString()} | 
-                Duration: {job.duration_start ? new Date(job.duration_start).toLocaleDateString() : 'N/A'} - {job.duration_end ? new Date(job.duration_end).toLocaleDateString() : 'N/A'}
+                Listed: {new Date(job.listing_date).toLocaleDateString()} | Duration: {job.duration_start ? new Date(job.duration_start).toLocaleDateString() : 'N/A'}
               </p>
             </div>
           ))}
         </div>
       )}
 
-      {/* Submit Job View */}
       {activeView === 'submit-job' && (
         <form onSubmit={handleJobSubmit} className="space-y-4">
           <Input name="title" label="Job Title *" required />
@@ -260,22 +264,13 @@ export function CommunityTab() {
           <Input name="applyUrl" type="url" label="Application URL" />
           
           <div className="space-y-2">
-            <label className="text-sm font-medium">Duration * (Date & Time)</label>
-            <div className="grid grid-cols-2 gap-2">
-              <input
-                type="datetime-local"
-                name="durationStart"
-                required
-                className="p-2 border rounded-lg"
-              />
-              <input
-                type="datetime-local"
-                name="durationEnd"
-                required
-                className="p-2 border rounded-lg"
-              />
-            </div>
-            <p className="text-xs text-gray-500">Start date/time → End date/time</p>
+            <label className="text-sm font-medium">Duration Start Date *</label>
+            <input
+              type="date"
+              name="durationStart"
+              required
+              className="w-full p-2 border rounded-lg"
+            />
           </div>
           
           <Button type="submit" className="w-full">Submit for Approval</Button>
