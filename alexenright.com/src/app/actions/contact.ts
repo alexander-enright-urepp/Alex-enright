@@ -10,10 +10,10 @@ interface ContactFormData {
   message: string
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function submitContactForm(data: ContactFormData) {
-  const supabase = createClient()
+  const supabase = createClient() as any
   
-  // @ts-ignore - Table exists in database but types not yet generated
   const { error } = await supabase
     .from('contact_submissions')
     .insert({
