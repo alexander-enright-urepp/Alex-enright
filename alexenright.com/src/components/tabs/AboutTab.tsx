@@ -5,12 +5,15 @@ import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Textarea } from '@/components/ui/Textarea'
 import { Modal } from '@/components/ui/Modal'
+import { submitContactForm } from '@/app/actions/contact'
 
 export function AboutTab() {
   const [showHireModal, setShowHireModal] = useState(false)
   const [showContactModal, setShowContactModal] = useState(false)
   const [showPhoneModal, setShowPhoneModal] = useState(false)
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [contactType, setContactType] = useState('')
+  const [submitStatus, setSubmitStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
 
   const handleHireOption = (option: string) => {
     if (option === 'donate') {
@@ -34,10 +37,39 @@ export function AboutTab() {
     const formData = new FormData(e.currentTarget)
     const phone = formData.get('phone') as string
     
-    const emailBody = `New call request from ${phone}`
-    window.location.href = `mailto:alex@alexenright.com?subject=Call Request&body=${encodeURIComponent(emailBody)}`
+    // Send to backend
+    const result = await submitContactForm({
+      type: 'call',
+      phone: phone,
+      message: `Phone: ${phone}`
+    })
     
-    setShowPhoneModal(false)
+    if (result.success) {
+      setShowPhoneModal(false)
+      setShowSuccessModal(true)
+    } else {
+      setSubmitStatus({ type: 'error', message: result.error || 'Failed to submit' })
+    }
+  }
+
+  const handleContactSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+    
+    const result = await submitContactForm({
+      type: contactType,
+      name: formData.get('name') as string,
+      email: formData.get('email') as string,
+      message: formData.get('message') as string
+    })
+    
+    if (result.success) {
+      setShowContactModal(false)
+      setShowSuccessModal(true)
+      e.currentTarget.reset()
+    } else {
+      setSubmitStatus({ type: 'error', message: result.error || 'Failed to send message' })
+    }
   }
 
   return (
@@ -244,7 +276,7 @@ export function AboutTab() {
         onClose={() => setShowContactModal(false)}
         title="Get in touch"
       >
-        <form className="space-y-4">
+        <form onSubmit={handleContactSubmit} className="space-y-4">
           <Input name="name" label="Your Name" required />
           <Input name="email" type="email" label="Email" required />
           <Textarea
@@ -253,6 +285,15 @@ export function AboutTab() {
             rows={4}
             required
           />
+          {submitStatus && (
+            <div className={`p-3 rounded-lg text-sm ${
+              submitStatus.type === 'success' 
+                ? 'bg-green-50 text-green-800' 
+                : 'bg-red-50 text-red-800'
+            }`}>
+              {submitStatus.message}
+            </div>
+          )}
           <Button type="submit" className="w-full">Send Message</Button>
         </form>
       </Modal>
@@ -272,8 +313,37 @@ export function AboutTab() {
             placeholder="+1 (555) 123-4567"
             required
           />
+          {submitStatus && (
+            <div className={`p-3 rounded-lg text-sm ${
+              submitStatus.type === 'success' 
+                ? 'bg-green-50 text-green-800' 
+                : 'bg-red-50 text-red-800'
+            }`}>
+              {submitStatus.message}
+            </div>
+          )}
           <Button type="submit" className="w-full">Submit</Button>
         </form>
+      </Modal>
+
+      {/* Success Modal */}
+      <Modal
+        isOpen={showSuccessModal}
+        onClose={() => setShowSuccessModal(false)}
+        title="Success!"
+      >
+        <div className="text-center py-6">
+          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <p className="text-lg font-medium text-gray-900">Thank you for your inquiry!</p>
+          <p className="text-gray-600 mt-2">We will be in contact with you shortly.</p>
+          <Button onClick={() => setShowSuccessModal(false)} className="mt-6 w-full">
+            Got it
+          </Button>
+        </div>
       </Modal>
 
       {/* Support Link */}
