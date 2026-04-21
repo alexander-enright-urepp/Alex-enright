@@ -71,7 +71,13 @@ export function CommunityTab() {
     e.preventDefault()
     setSubmitStatus(null)
     
-    const content = (e.currentTarget.elements.namedItem('content') as HTMLTextAreaElement)?.value || ''
+    const content = (e.currentTarget.elements.namedItem('content') as HTMLTextAreaElement)?.value?.trim() || ''
+    
+    // Validation: must have content OR image
+    if (!content && !selectedImage) {
+      setSubmitStatus({ type: 'error', message: 'Please enter a message or add a photo' })
+      return
+    }
     
     const result = await createCommunityPost(content, selectedImage)
     
@@ -216,6 +222,16 @@ export function CommunityTab() {
                 </button>
               )}
             </div>
+            
+            {submitStatus && (
+              <div className={`p-3 rounded-lg text-sm ${
+                submitStatus.type === 'success' 
+                  ? 'bg-green-50 text-green-800' 
+                  : 'bg-red-50 text-red-800'
+              }`}>
+                {submitStatus.message}
+              </div>
+            )}
             
             <Button type="submit" className="w-full">Post</Button>
           </form>
