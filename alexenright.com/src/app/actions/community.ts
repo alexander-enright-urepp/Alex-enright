@@ -8,7 +8,7 @@ export async function getCommunityPosts() {
   
   const { data, error } = await supabase
     .from('community_posts')
-    .select('*')
+    .select('*, likes_count:post_likes(count)')
     .order('created_at', { ascending: false })
     .limit(50)
 
@@ -28,7 +28,6 @@ export async function createCommunityPost(formData: FormData) {
   
   let imageUrl = null
   
-  // Upload image if provided
   if (imageFile) {
     const fileExt = imageFile.name.split('.').pop()
     const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`
@@ -42,7 +41,6 @@ export async function createCommunityPost(formData: FormData) {
       return { success: false, error: 'Failed to upload image' }
     }
     
-    // Get public URL
     const { data: { publicUrl } } = supabase.storage
       .from('community')
       .getPublicUrl(fileName)
@@ -50,7 +48,6 @@ export async function createCommunityPost(formData: FormData) {
     imageUrl = publicUrl
   }
   
-  // Create post
   const { error } = await supabase
     .from('community_posts')
     .insert({
@@ -64,6 +61,34 @@ export async function createCommunityPost(formData: FormData) {
   }
 
   return { success: true }
+}
+
+export async function likePost(postId: string, anonId: string) {
+  const supabase = createClient()
+  
+  // Check if already liked
+  const { data: existing } = await supabase
+    .from('post_likes')
+    .select('*')
+    .eq('post_id', postId)
+    .eq('anon_id', anonId)
+    .single()
+  
+  if (existing) {
+    // Unlike
+    await supabase
+      .from('post_likes')
+      .delete()
+      .eq('post_id', postId)
+      .eq('anon_id', anonId)
+    return { success: true, liked: false }
+  } else {
+    // Like
+    await supabase
+      .from('post_likes')
+      .insert({ post_id: postId, anon_id: anonId })
+    return { success: true, liked: true }
+  }
 }
 
 export async function getJobListings() {
@@ -95,6 +120,8 @@ export async function submitJobListing(formData: FormData) {
       description: formData.get('description'),
       salary_range: formData.get('salaryRange') || null,
       apply_url: formData.get('applyUrl') || null,
+      duration_start: formData.get('durationStart') || null,
+      duration_end: formData.get('durationEnd') || null,
       approved: false,
     })
 
