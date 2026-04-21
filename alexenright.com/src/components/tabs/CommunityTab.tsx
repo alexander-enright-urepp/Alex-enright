@@ -70,13 +70,10 @@ export function CommunityTab() {
   const handlePostSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setSubmitStatus(null)
-    const formData = new FormData(e.currentTarget)
     
-    if (selectedImage) {
-      formData.append('image', selectedImage)
-    }
+    const content = (e.currentTarget.elements.namedItem('content') as HTMLTextAreaElement)?.value || ''
     
-    const result = await createCommunityPost(formData)
+    const result = await createCommunityPost(content, selectedImage)
     
     if (result.success) {
       setShowPostSuccessModal(true)

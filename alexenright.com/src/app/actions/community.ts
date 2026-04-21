@@ -32,32 +32,34 @@ export async function getCommunityPosts() {
   return postsWithLikes
 }
 
-export async function createCommunityPost(formData: FormData) {
+export async function createCommunityPost(content: string, imageFile: File | null) {
   const supabase = createClient()
-  
-  const content = formData.get('content') as string
-  const imageFile = formData.get('image') as File | null
   
   let imageUrl = null
   
   if (imageFile) {
-    const fileExt = imageFile.name.split('.').pop()
-    const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`
-    
-    const { data: uploadData, error: uploadError } = await supabase.storage
-      .from('community')
-      .upload(fileName, imageFile)
-    
-    if (uploadError) {
-      console.error('Image upload error:', uploadError)
-      return { success: false, error: 'Failed to upload image' }
+    try {
+      const fileExt = imageFile.name.split('.').pop()
+      const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`
+      
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('community')
+        .upload(fileName, imageFile)
+      
+      if (uploadError) {
+        console.error('Image upload error:', uploadError)
+        return { success: false, error: `Upload failed: ${uploadError.message}` }
+      }
+      
+      const { data: { publicUrl } } = supabase.storage
+        .from('community')
+        .getPublicUrl(fileName)
+      
+      imageUrl = publicUrl
+    } catch (err) {
+      console.error('Image upload exception:', err)
+      return { success: false, error: 'Image upload failed' }
     }
-    
-    const { data: { publicUrl } } = supabase.storage
-      .from('community')
-      .getPublicUrl(fileName)
-    
-    imageUrl = publicUrl
   }
   
   const { error } = await supabase
@@ -69,7 +71,7 @@ export async function createCommunityPost(formData: FormData) {
 
   if (error) {
     console.error('Create community post error:', error)
-    return { success: false, error: 'Failed to create post' }
+    return { success: false, error: `Failed to create post: ${error.message}` }
   }
 
   return { success: true }
