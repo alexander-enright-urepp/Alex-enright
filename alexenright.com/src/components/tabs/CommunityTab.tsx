@@ -192,7 +192,7 @@ export function CommunityTab() {
             </Button>
           </form>
 
-          {posts.map((post) => (
+          {posts.map((post: any) => (
             <div key={post.id} className="bg-white rounded-xl border border-gray-200 p-4">
               {post.image_url && (
                 <img
