@@ -6,9 +6,9 @@ import { createClient } from '@/lib/supabase/client'
 export async function getCommunityPosts() {
   const supabase = createClient()
   
-  const { data, error } = await supabase
+  const { data: posts, error } = await supabase
     .from('community_posts')
-    .select('*, likes_count:community_post_likes(count)')
+    .select('*')
     .order('created_at', { ascending: false })
     .limit(50)
 
@@ -17,7 +17,19 @@ export async function getCommunityPosts() {
     return []
   }
 
-  return data || []
+  // Get likes for each post
+  const postsWithLikes = await Promise.all(
+    (posts || []).map(async (post) => {
+      const { count } = await supabase
+        .from('community_post_likes')
+        .select('*', { count: 'exact', head: true })
+        .eq('post_id', post.id)
+      
+      return { ...post, likes_count: count || 0 }
+    })
+  )
+
+  return postsWithLikes
 }
 
 export async function createCommunityPost(formData: FormData) {
