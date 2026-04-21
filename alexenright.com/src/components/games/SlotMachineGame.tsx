@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Button } from '@/components/ui/Button'
 
 const SYMBOLS = ['🍒', '🍋', '💎', '7️⃣', '🎰', '⭐']
@@ -24,7 +24,6 @@ export function SlotMachineGame({ onBack }: SlotMachineGameProps) {
     setResult('')
     setWin(false)
 
-    // Spin animation
     const interval = setInterval(() => {
       setReels([
         SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)],
@@ -33,7 +32,6 @@ export function SlotMachineGame({ onBack }: SlotMachineGameProps) {
       ])
     }, 100)
 
-    // Stop after 2 seconds
     setTimeout(() => {
       clearInterval(interval)
       const finalReels = [
@@ -49,13 +47,11 @@ export function SlotMachineGame({ onBack }: SlotMachineGameProps) {
 
   const checkWin = (finalReels: string[]) => {
     if (finalReels[0] === finalReels[1] && finalReels[1] === finalReels[2]) {
-      // Jackpot - all 3 match
       const payout = finalReels[0] === '7️⃣' ? 100 : 50
       setCredits(c => c + payout)
       setResult(`JACKPOT! +${payout} credits`)
       setWin(true)
     } else if (finalReels[0] === finalReels[1] || finalReels[1] === finalReels[2] || finalReels[0] === finalReels[2]) {
-      // 2 match
       setCredits(c => c + 20)
       setResult('Nice! +20 credits')
       setWin(true)
@@ -108,8 +104,7 @@ export function SlotMachineGame({ onBack }: SlotMachineGameProps) {
           </div>
         )}
 
-        <div className="flex gap-3"
-003e
+        <div className="flex gap-3">
           <Button
             onClick={spin}
             disabled={isSpinning || credits < 10}
