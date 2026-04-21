@@ -8,7 +8,7 @@ export async function getCommunityPosts() {
   
   const { data, error } = await supabase
     .from('community_posts')
-    .select('*, likes_count:post_likes(count)')
+    .select('*, likes_count:community_post_likes(count)')
     .order('created_at', { ascending: false })
     .limit(50)
 
@@ -68,7 +68,7 @@ export async function likePost(postId: string, anonId: string) {
   
   // Check if already liked
   const { data: existing } = await supabase
-    .from('post_likes')
+    .from('community_post_likes')
     .select('*')
     .eq('post_id', postId)
     .eq('anon_id', anonId)
@@ -77,7 +77,7 @@ export async function likePost(postId: string, anonId: string) {
   if (existing) {
     // Unlike
     await supabase
-      .from('post_likes')
+      .from('community_post_likes')
       .delete()
       .eq('post_id', postId)
       .eq('anon_id', anonId)
@@ -85,7 +85,7 @@ export async function likePost(postId: string, anonId: string) {
   } else {
     // Like
     await supabase
-      .from('post_likes')
+      .from('community_post_likes')
       .insert({ post_id: postId, anon_id: anonId })
     return { success: true, liked: true }
   }
