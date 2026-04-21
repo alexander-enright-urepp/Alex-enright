@@ -1,12 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { CommunityPost, JobListing } from '@/types'
 import { getCommunityPosts, createCommunityPost, getJobListings, submitJobListing } from '@/app/actions/community'
 import { Textarea } from '@/components/ui/Textarea'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { formatRelativeDate } from '@/lib/utils'
+import Image from 'next/image'
 
 type TabView = 'posts' | 'jobs' | 'submit-job'
 
@@ -16,6 +17,9 @@ export function CommunityTab() {
   const [jobs, setJobs] = useState<JobListing[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [submitStatus, setSubmitStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
+  const [selectedImage, setSelectedImage] = useState<File | null>(null)
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     loadData()
@@ -31,16 +35,42 @@ export function CommunityTab() {
     setIsLoading(false)
   }
 
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      setSelectedImage(file)
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const clearImage = () => {
+    setSelectedImage(null)
+    setImagePreview(null)
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
+    }
+  }
+
   const handlePostSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
+    
+    if (selectedImage) {
+      formData.append('image', selectedImage)
+    }
+    
     const result = await createCommunityPost(formData)
     
     if (result.success) {
       setSubmitStatus({ type: 'success', message: 'Post published!' })
       e.currentTarget.reset()
+      clearImage()
       await loadData() // Refresh posts
-      setTimeout(() => setSubmitStatus(null), 3000) // Clear after 3 seconds
+      setTimeout(() => setSubmitStatus(null), 3000)
     } else {
       setSubmitStatus({ type: 'error', message: result.error || 'Failed to post' })
     }
@@ -101,9 +131,49 @@ export function CommunityTab() {
               name="content"
               placeholder="What's on your mind?"
               rows={3}
-              required
               maxLength={500}
             />
+            
+            {/* Image Upload */}
+            <div className="mt-3">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleImageSelect}
+                className="hidden"
+              />
+              
+              {imagePreview ? (
+                <div className="relative">
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    className="w-full h-48 object-cover rounded-lg"
+                  />
+                  <button
+                    type="button"
+                    onClick={clearImage}
+                    className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="flex items-center gap-2 text-gray-600 hover:text-gray-800 transition-colors"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <span>Add Photo</span>
+                </button>
+              )}
+            </div>
             
             {submitStatus && activeView === 'posts' && (
               <div
@@ -117,13 +187,20 @@ export function CommunityTab() {
               </div>
             )}
             
-            <Button type="submit" className="mt-2 w-full">
+            <Button type="submit" className="mt-3 w-full">
               Post
             </Button>
           </form>
 
           {posts.map((post) => (
             <div key={post.id} className="bg-white rounded-xl border border-gray-200 p-4">
+              {post.image_url && (
+                <img
+                  src={post.image_url}
+                  alt="Post image"
+                  className="w-full h-64 object-cover rounded-lg mb-3"
+                />
+              )}
               <p className="text-gray-900 whitespace-pre-wrap">{post.content}</p>
               <span className="text-sm text-gray-500 mt-2 block">
                 {formatRelativeDate(post.created_at)}

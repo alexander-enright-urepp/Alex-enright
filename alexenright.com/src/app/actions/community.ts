@@ -23,10 +23,39 @@ export async function getCommunityPosts() {
 export async function createCommunityPost(formData: FormData) {
   const supabase = createClient()
   
+  const content = formData.get('content') as string
+  const imageFile = formData.get('image') as File | null
+  
+  let imageUrl = null
+  
+  // Upload image if provided
+  if (imageFile) {
+    const fileExt = imageFile.name.split('.').pop()
+    const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`
+    
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from('community')
+      .upload(fileName, imageFile)
+    
+    if (uploadError) {
+      console.error('Image upload error:', uploadError)
+      return { success: false, error: 'Failed to upload image' }
+    }
+    
+    // Get public URL
+    const { data: { publicUrl } } = supabase.storage
+      .from('community')
+      .getPublicUrl(fileName)
+    
+    imageUrl = publicUrl
+  }
+  
+  // Create post
   const { error } = await supabase
     .from('community_posts')
     .insert({
-      content: formData.get('content'),
+      content: content || '',
+      image_url: imageUrl,
     })
 
   if (error) {
