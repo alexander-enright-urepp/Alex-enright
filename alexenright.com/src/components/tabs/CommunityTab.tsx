@@ -69,6 +69,7 @@ export function CommunityTab() {
 
   const handlePostSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setSubmitStatus(null)
     const formData = new FormData(e.currentTarget)
     
     if (selectedImage) {
@@ -81,7 +82,10 @@ export function CommunityTab() {
       setShowPostSuccessModal(true)
       e.currentTarget.reset()
       clearImage()
+      // Force refresh of posts
       await loadData()
+      // Scroll to top of posts
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     } else {
       setSubmitStatus({ type: 'error', message: result.error || 'Failed to post' })
     }
@@ -121,7 +125,10 @@ export function CommunityTab() {
     <div className="p-4">
       <Modal
         isOpen={showPostSuccessModal}
-        onClose={() => setShowPostSuccessModal(false)}
+        onClose={() => {
+          setShowPostSuccessModal(false)
+          loadData() // Refresh when closing modal
+        }}
         title="Success!"
       >
         <div className="text-center py-6">
@@ -131,9 +138,15 @@ export function CommunityTab() {
             </svg>
           </div>
           <p className="text-lg font-medium text-gray-900">Your Post to the Community was Successful!</p>
-          <Button onClick={() => setShowPostSuccessModal(false)} className="mt-6 w-full">
+          <button 
+            onClick={() => {
+              setShowPostSuccessModal(false)
+              loadData()
+            }}
+            className="mt-6 w-full py-3 px-4 bg-accent text-white rounded-lg font-medium"
+          >
             Got it
-          </Button>
+          </button>
         </div>
       </Modal>
 
