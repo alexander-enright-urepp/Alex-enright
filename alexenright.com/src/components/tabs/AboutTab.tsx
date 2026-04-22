@@ -164,6 +164,7 @@ export function AboutTab() {
               className="w-16 h-24 object-cover rounded-lg"
             />
             <div>
+              <p className="text-xs font-bold text-green-600">Available on Kindle</p>
               <p className="font-medium text-lg">An Entrepreneur's Journey</p>
               <p className="text-sm text-gray-500">by Alexander Enright</p>
             </div>
