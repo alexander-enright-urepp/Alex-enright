@@ -180,6 +180,7 @@ export function AboutTab() {
               className="w-16 h-24 object-cover rounded-lg"
             />
             <div>
+              <p className="text-xs font-bold text-red-500">JOURNAL</p>
               <p className="font-medium text-lg">An Entrepreneur's Chance</p>
               <p className="text-sm text-gray-500">by Alexander Enright</p>
             </div>
