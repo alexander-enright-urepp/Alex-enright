@@ -71,8 +71,8 @@ export function RecruiterTab() {
       </div>
 
       <header className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Work with Agent Alex</h1>
-        <p className="text-gray-600 mt-1">Submit your information and Alex will help you find an opportunity best suited for you.</p>
+        <h1 className="text-2xl font-bold text-gray-900">Let's Get To Work</h1>
+        <p className="text-gray-600 mt-1">Submit your information and a recruiter will help you find an opportunity best suited for you.</p>
       </header>
 
       <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
