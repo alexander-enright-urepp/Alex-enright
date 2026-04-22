@@ -1,6 +1,7 @@
 import { readFileSync } from 'fs'
 import { join } from 'path'
 
+// Privacy Policy Page - renders static HTML content
 export default function PrivacyPolicy() {
   const htmlContent = readFileSync(
     join(process.cwd(), 'public', 'privacy-policy.html'), 
