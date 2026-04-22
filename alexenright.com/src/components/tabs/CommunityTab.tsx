@@ -10,10 +10,10 @@ import { Modal } from '@/components/ui/Modal'
 import { formatRelativeDate } from '@/lib/utils'
 import { Heart } from '@/components/icons/Heart'
 
-type TabView = 'posts' | 'jobs' | 'submit-job'
+type TabView = 'jobs' | 'submit-job'
 
 export function CommunityTab() {
-  const [activeView, setActiveView] = useState<TabView>('posts')
+  const [activeView, setActiveView] = useState<TabView>('jobs')
   const [posts, setPosts] = useState<CommunityPost[]>([])
   const [jobs, setJobs] = useState<JobListing[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -164,7 +164,6 @@ export function CommunityTab() {
 
       <div className="flex gap-2 mb-6">
         {[
-          { id: 'posts', label: 'Posts' },
           { id: 'jobs', label: 'Jobs' },
           { id: 'submit-job', label: 'Post a Job' },
         ].map((tab) => (

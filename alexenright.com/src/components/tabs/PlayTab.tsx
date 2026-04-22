@@ -10,7 +10,6 @@ import { TicTacToeGame } from '@/components/games/TicTacToeGame'
 import { SnakeGame } from '@/components/games/SnakeGame'
 import { Magic8BallGame } from '@/components/games/Magic8BallGame'
 import { FortuneCookieGame } from '@/components/games/FortuneCookieGame'
-import { SlotMachineGame } from '@/components/games/SlotMachineGame'
 import { HangmanGame } from '@/components/games/HangmanGame'
 import { PremiumModal } from '@/components/games/PremiumModal'
 
@@ -22,12 +21,11 @@ const games: Game[] = [
   { id: 'tic-tac-toe', name: 'Tic Tac Toe', description: 'Beat the AI', icon: '⭕', locked: true },
   { id: 'snake', name: 'Snake', description: 'Classic arcade', icon: '🐍', locked: true },
   { id: 'fortune-cookie', name: 'Fortune Cookie', description: 'Daily fortune', icon: '🥠', locked: true },
-  { id: 'slot-machine', name: 'Slot Machine', description: 'Spin to win', icon: '🎰', locked: true },
   { id: 'hangman', name: 'Hangman', description: 'Guess the word', icon: '🎭', locked: true },
 ]
 
 // Premium games that share the same unlock
-const PREMIUM_GAMES = ['tic-tac-toe', 'snake', 'fortune-cookie', 'slot-machine', 'hangman']
+const PREMIUM_GAMES = ['tic-tac-toe', 'snake', 'fortune-cookie', 'hangman']
 
 export function PlayTab() {
   const [activeGame, setActiveGame] = useState<GameType | null>(null)
@@ -72,8 +70,6 @@ export function PlayTab() {
         return <Magic8BallGame onBack={() => setActiveGame(null)} />
       case 'fortune-cookie':
         return <FortuneCookieGame onBack={() => setActiveGame(null)} />
-      case 'slot-machine':
-        return <SlotMachineGame onBack={() => setActiveGame(null)} />
       case 'hangman':
         return <HangmanGame onBack={() => setActiveGame(null)} />
       default:
