@@ -368,16 +368,34 @@ class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
 // MARK: - Safari View
 struct SafariView: UIViewControllerRepresentable {
     let url: URL
-
+    @Environment(\.dismiss) var dismiss
+    
     func makeUIViewController(context: Context) -> SFSafariViewController {
         let config = SFSafariViewController.Configuration()
         config.entersReaderIfAvailable = false
         let safariVC = SFSafariViewController(url: url, configuration: config)
         safariVC.preferredControlTintColor = .systemBlue
+        safariVC.delegate = context.coordinator
         return safariVC
     }
-
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator(dismiss: dismiss)
+    }
+    
     func updateUIViewController(_ uiViewController: SFSafariViewController, context: Context) {}
+    
+    class Coordinator: NSObject, SFSafariViewControllerDelegate {
+        let dismiss: DismissAction
+        
+        init(dismiss: DismissAction) {
+            self.dismiss = dismiss
+        }
+        
+        func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+            dismiss()
+        }
+    }
 }
 
 // MARK: - Community Post View
