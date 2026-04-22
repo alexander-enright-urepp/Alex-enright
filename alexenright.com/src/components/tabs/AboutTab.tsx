@@ -131,7 +131,8 @@ export function AboutTab() {
 
       {/* Music */}
       <section className="mb-8">
-        <h2 className="text-lg font-semibold mb-3">What I'm Listening To</h2>
+        <h2 className="text-lg font-semibold mb-2">What I'm Listening To</h2>
+        <p className="text-sm text-gray-500 mb-3">Long Form Therapy Sounds</p>
         <div className="bg-gray-100 rounded-xl overflow-hidden" style={{ height: '400px' }}>
           <iframe 
             src="https://open.spotify.com/embed/artist/65Ugrmba5ZkPNVxmHpnfFu?utm_source=generator&theme=0" 
