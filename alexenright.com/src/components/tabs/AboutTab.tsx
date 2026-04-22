@@ -151,21 +151,39 @@ export function AboutTab() {
       <section className="mb-8">
         <h2 className="text-lg font-semibold mb-3">Recommended Reading</h2>
         <div className="space-y-3">
-          {[
-            { title: 'The Pragmatic Programmer', author: 'Andy Hunt & Dave Thomas' },
-            { title: 'Deep Work', author: 'Cal Newport' },
-          ].map((book) => (
-            <a
-              key={book.title}
-              href={`https://amazon.com/s?k=${encodeURIComponent(book.title)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block p-4 border border-gray-200 rounded-xl hover:border-accent transition-colors"
-            >
-              <p className="font-medium">{book.title}</p>
-              <p className="text-sm text-gray-500">{book.author}</p>
-            </a>
-          ))}
+          <a
+            href="https://www.amazon.com/stores/Alexander-Enright/author/B0G3W49PNY"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-4 p-4 border border-gray-200 rounded-xl hover:border-accent transition-colors"
+          >
+            <img 
+              src="/journey.png" 
+              alt="An Entrepreneur's Journey" 
+              className="w-16 h-24 object-cover rounded-lg"
+            />
+            <div>
+              <p className="font-medium text-lg">An Entrepreneur's Journey</p>
+              <p className="text-sm text-gray-500">by Alexander Enright</p>
+            </div>
+          </a>
+          
+          <a
+            href="https://www.amazon.com/stores/Alexander-Enright/author/B0G3W49PNY"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-4 p-4 border border-gray-200 rounded-xl hover:border-accent transition-colors"
+          >
+            <img 
+              src="/chance.png" 
+              alt="An Entrepreneur's Chance" 
+              className="w-16 h-24 object-cover rounded-lg"
+            />
+            <div>
+              <p className="font-medium text-lg">An Entrepreneur's Chance</p>
+              <p className="text-sm text-gray-500">by Alexander Enright</p>
+            </div>
+          </a>
         </div>
       </section>
 
