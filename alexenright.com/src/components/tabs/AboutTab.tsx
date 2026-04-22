@@ -189,7 +189,8 @@ export function AboutTab() {
 
       {/* Art Gallery */}
       <section className="mb-8">
-        <h2 className="text-lg font-semibold mb-3">Art Gallery</h2>
+        <h2 className="text-lg font-semibold mb-2">Art Gallery</h2>
+        <p className="text-sm text-gray-500 mb-3">The Bench Series - Available For Sale</p>
         <div className="grid grid-cols-2 gap-3">
           {[
             { title: 'The Bench 6', url: 'https://www.saatchiart.com/art/Painting-The-Bench-6/2905359/13416657/view', img: '/6.jpeg' },
