@@ -1,124 +1,49 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
-import { CommunityPost, JobListing } from '@/types'
-import { getCommunityPosts, createCommunityPost, getJobListings, submitJobListing, likePost } from '@/app/actions/community'
+import { useState, useEffect } from 'react'
+import { JobListing } from '@/types'
+import { getJobListings, submitJobListing } from '@/app/actions/community'
 import { Textarea } from '@/components/ui/Textarea'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
-import { formatRelativeDate } from '@/lib/utils'
-import { Heart } from '@/components/icons/Heart'
 
 type TabView = 'jobs' | 'submit-job'
 
 export function CommunityTab() {
   const [activeView, setActiveView] = useState<TabView>('jobs')
-  const [posts, setPosts] = useState<CommunityPost[]>([])
   const [jobs, setJobs] = useState<JobListing[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [showJobSuccessModal, setShowJobSuccessModal] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
-  const [selectedImage, setSelectedImage] = useState<File | null>(null)
-  const [imagePreview, setImagePreview] = useState<string | null>(null)
-  const [showPostSuccessModal, setShowPostSuccessModal] = useState(false)
-  const [anonId, setAnonId] = useState<string>('')
-  const [likedPosts, setLikedPosts] = useState<Set<string>>(new Set())
-  const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    const storedId = localStorage.getItem('anon_id')
-    if (storedId) {
-      setAnonId(storedId)
-    } else {
-      const newId = Math.random().toString(36).substring(2)
-      localStorage.setItem('anon_id', newId)
-      setAnonId(newId)
-    }
-    loadData()
+    loadJobs()
   }, [])
 
-  async function loadData() {
-    const [postsData, jobsData] = await Promise.all([
-      getCommunityPosts(),
-      getJobListings(),
-    ])
-    setPosts(postsData)
-    setJobs(jobsData)
+  async function loadJobs() {
+    setIsLoading(true)
+    try {
+      const jobsData = await getJobListings()
+      console.log('Loaded jobs:', jobsData) // Debug log
+      setJobs(jobsData || [])
+    } catch (error) {
+      console.error('Error loading jobs:', error)
+      setJobs([])
+    }
     setIsLoading(false)
-  }
-
-  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      setSelectedImage(file)
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string)
-      }
-      reader.readAsDataURL(file)
-    }
-  }
-
-  const clearImage = () => {
-    setSelectedImage(null)
-    setImagePreview(null)
-    if (fileInputRef.current) {
-      fileInputRef.current.value = ''
-    }
-  }
-
-  const handlePostSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setSubmitStatus(null)
-    
-    const content = (e.currentTarget.elements.namedItem('content') as HTMLTextAreaElement)?.value?.trim() || ''
-    
-    // Validation: must have content OR image
-    if (!content && !selectedImage) {
-      setSubmitStatus({ type: 'error', message: 'Please enter a message or add a photo' })
-      return
-    }
-    
-    const result = await createCommunityPost(content, selectedImage)
-    
-    if (result.success) {
-      setShowPostSuccessModal(true)
-      e.currentTarget.reset()
-      clearImage()
-      // Force refresh of posts
-      await loadData()
-      // Scroll to top of posts
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    } else {
-      setSubmitStatus({ type: 'error', message: result.error || 'Failed to post' })
-    }
-  }
-
-  const handleLike = async (postId: string, hasLiked: boolean) => {
-    const result = await likePost(postId, anonId)
-    if (result.success) {
-      if (result.liked) {
-        setLikedPosts(prev => new Set(prev).add(postId))
-      } else {
-        setLikedPosts(prev => {
-          const newSet = new Set(prev)
-          newSet.delete(postId)
-          return newSet
-        })
-      }
-      await loadData()
-    }
   }
 
   const handleJobSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setSubmitStatus(null)
+    
     const formData = new FormData(e.currentTarget)
     const result = await submitJobListing(formData)
     
     if (result.success) {
-      setSubmitStatus({ type: 'success', message: 'Job submitted for approval' })
+      setShowJobSuccessModal(true)
       e.currentTarget.reset()
-      setTimeout(() => setActiveView('jobs'), 2000)
     } else {
       setSubmitStatus({ type: 'error', message: result.error || 'Failed to submit job' })
     }
@@ -126,11 +51,13 @@ export function CommunityTab() {
 
   return (
     <div className="p-4">
+      {/* Job Success Modal */}
       <Modal
-        isOpen={showPostSuccessModal}
+        isOpen={showJobSuccessModal}
         onClose={() => {
-          setShowPostSuccessModal(false)
-          loadData() // Refresh when closing modal
+          setShowJobSuccessModal(false)
+          setActiveView('jobs')
+          loadJobs() // Refresh jobs list
         }}
         title="Success!"
       >
@@ -140,15 +67,17 @@ export function CommunityTab() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <p className="text-lg font-medium text-gray-900">Your Post to the Community was Successful!</p>
+          <p className="text-lg font-medium text-gray-900">Job Submitted Successfully!</p>
+          <p className="text-gray-600 mt-2">Your job listing has been submitted for approval.</p>
           <button 
             onClick={() => {
-              setShowPostSuccessModal(false)
-              loadData()
+              setShowJobSuccessModal(false)
+              setActiveView('jobs')
+              loadJobs()
             }}
             className="mt-6 w-full py-3 px-4 bg-accent text-white rounded-lg font-medium"
           >
-            Got it
+            View Jobs
           </button>
         </div>
       </Modal>
@@ -183,18 +112,40 @@ export function CommunityTab() {
 
       {activeView === 'jobs' && (
         <div className="space-y-4">
-          {jobs.map((job: any) => (
-            <div key={job.id} className="bg-white rounded-xl border p-4">
-              <h3 className="font-semibold text-lg">{job.title}</h3>
-              <p className="text-accent font-medium">{job.company}</p>
-              <p className="text-sm text-gray-600">{job.location}</p>
-              {job.salary_range && <p className="text-green-600 text-sm font-medium">{job.salary_range}</p>}
-              <p className="text-gray-700 mt-2 text-sm">{job.description}</p>
-              <p className="text-xs text-gray-400 mt-2">
-                Listed: {new Date(job.listing_date).toLocaleDateString()} | Duration: {job.duration_start ? new Date(job.duration_start).toLocaleDateString() : 'N/A'}
-              </p>
+          {isLoading ? (
+            <div className="text-center py-8">
+              <p className="text-gray-500">Loading jobs...</p>
             </div>
-          ))}
+          ) : jobs.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-gray-500">No jobs available yet.</p>
+              <p className="text-sm text-gray-400 mt-2">Be the first to post a job!</p>
+            </div>
+          ) : (
+            jobs.map((job: any) => (
+              <div key={job.id} className="bg-white rounded-xl border p-4">
+                <h3 className="font-semibold text-lg">{job.title}</h3>
+                <p className="text-accent font-medium">{job.company}</p>
+                <p className="text-sm text-gray-600">{job.location}</p>
+                {job.salary_range && <p className="text-green-600 text-sm font-medium">{job.salary_range}</p>}
+                <p className="text-gray-700 mt-2 text-sm">{job.description}</p>
+                {job.apply_url && (
+                  <a 
+                    href={job.apply_url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-block mt-3 text-accent hover:underline text-sm font-medium"
+                  >
+                    Apply Now →
+                  </a>
+                )}
+                <p className="text-xs text-gray-400 mt-2">
+                  Listed: {job.listing_date ? new Date(job.listing_date).toLocaleDateString() : 'N/A'}
+                  {job.duration_start && ` | Duration: ${new Date(job.duration_start).toLocaleDateString()}`}
+                </p>
+              </div>
+            ))
+          )}
         </div>
       )}
 
@@ -208,14 +159,23 @@ export function CommunityTab() {
           <Input name="applyUrl" type="url" label="Application URL" />
           
           <div className="space-y-2">
-            <label className="text-sm font-medium">Duration Start Date *</label>
+            <label className="text-sm font-medium">Duration Start Date</label>
             <input
               type="date"
               name="durationStart"
-              required
               className="w-full p-2 border rounded-lg"
             />
           </div>
+          
+          {submitStatus && (
+            <div className={`p-3 rounded-lg text-sm ${
+              submitStatus.type === 'success' 
+                ? 'bg-green-50 text-green-800' 
+                : 'bg-red-50 text-red-800'
+            }`}>
+              {submitStatus.message}
+            </div>
+          )}
           
           <Button type="submit" className="w-full">Submit for Approval</Button>
         </form>
