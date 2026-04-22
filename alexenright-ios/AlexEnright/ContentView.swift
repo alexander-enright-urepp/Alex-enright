@@ -296,7 +296,7 @@ struct WebView: UIViewRepresentable {
             
             switch action {
             case "checkStatus":
-                let isPurchased = iapManager.isPurchased(productID: "com.alexenright.app.games.access")
+                let isPurchased = iapManager.isPurchased(productID: "com.alexenright")
                 let status = isPurchased ? "purchased" : "not_purchased"
                 let script = "window.dispatchEvent(new CustomEvent('iapStatusChanged', { detail: { status: '\(status)' }}));"
                 webView?.evaluateJavaScript(script, completionHandler: nil)

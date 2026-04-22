@@ -10,7 +10,7 @@ class IAPManager: NSObject, ObservableObject, SKPaymentTransactionObserver, SKPr
     @Published var purchaseError: String?
     
     // Your IAP Product ID from App Store Connect
-    let productIDs: Set<String> = ["com.alexenright.app.games.access"]
+    let productIDs: Set<String> = ["com.alexenright"]
     
     private var productsRequest: SKProductsRequest?
     private var completionHandler: ((Bool, String?) -> Void)?
