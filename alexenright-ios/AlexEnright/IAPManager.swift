@@ -170,7 +170,7 @@ class PurchaseViewModel: ObservableObject {
     }
     
     func checkPurchaseStatus() {
-        isPurchased = iapManager.isPurchased(productID: "com.alexenright.app.games.access")
+        isPurchased = iapManager.isPurchased(productID: "com.alexenright")
     }
     
     func purchaseGames() {
