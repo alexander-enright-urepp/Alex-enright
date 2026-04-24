@@ -146,6 +146,14 @@ export function CommunityTab() {
               </div>
             ))
           )}
+          <div className="pt-4 pb-2 text-center">
+            <a 
+              href="mailto:support@alexenright.com?subject=Report%20a%20Post"
+              className="text-red-600 text-sm hover:underline"
+            >
+              Report a Post
+            </a>
+          </div>
         </div>
       )}
 
