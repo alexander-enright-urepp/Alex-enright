@@ -10,7 +10,6 @@
 		D7A1A0012A3B2C0000000001 /* AlexEnrightApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A1A0002A3B2C0000000001 /* AlexEnrightApp.swift */; };
 		D7A1A0032A3B2C0000000001 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A1A0022A3B2C0000000001 /* ContentView.swift */; };
 		D7A1A0052A3B2C0100000001 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D7A1A0042A3B2C0100000001 /* Assets.xcassets */; };
-		D7A1A0062A3B2C0200000001 /* DataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A1A00A2A3B2C0200000001 /* DataExtension.swift */; };
 		F87016ED2F99629F0041F82A /* IAPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87016EC2F99629F0041F82A /* IAPManager.swift */; };
 		F898689C2F97CE3A0056B629 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F898689B2F97CE3A0056B629 /* StoreKit.framework */; };
 /* End PBXBuildFile section */
@@ -21,7 +20,6 @@
 		D7A1A0022A3B2C0000000001 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D7A1A0042A3B2C0100000001 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D7A1A0092A3B2C0100000001 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D7A1A00A2A3B2C0200000001 /* DataExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataExtension.swift; sourceTree = "<group>"; };
 		F87016EC2F99629F0041F82A /* IAPManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPManager.swift; sourceTree = "<group>"; };
 		F89868992F97CE2F0056B629 /* AlexEnright.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AlexEnright.entitlements; sourceTree = "<group>"; };
 		F898689B2F97CE3A0056B629 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
@@ -63,7 +61,6 @@
 				F89868992F97CE2F0056B629 /* AlexEnright.entitlements */,
 				D7A1A0002A3B2C0000000001 /* AlexEnrightApp.swift */,
 				D7A1A0022A3B2C0000000001 /* ContentView.swift */,
-				D7A1A00A2A3B2C0200000001 /* DataExtension.swift */,
 				D7A1A0042A3B2C0100000001 /* Assets.xcassets */,
 				D7A1A0092A3B2C0100000001 /* Info.plist */,
 			);
@@ -150,7 +147,6 @@
 				F87016ED2F99629F0041F82A /* IAPManager.swift in Sources */,
 				D7A1A0032A3B2C0000000001 /* ContentView.swift in Sources */,
 				D7A1A0012A3B2C0000000001 /* AlexEnrightApp.swift in Sources */,
-				D7A1A0062A3B2C0200000001 /* DataExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
