@@ -43,6 +43,13 @@ export default function RootLayout({
             gtag('config', 'G-PVH7JECM17');
           `}
         </Script>
+        {/* Google AdSense */}
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1262710570426029"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
       </head>
       <body className={inter.className}>
         <div className="min-h-screen bg-white">
