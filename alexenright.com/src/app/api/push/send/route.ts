@@ -29,7 +29,7 @@ export async function POST(request: Request) {
         app_id: ONESIGNAL_APP_ID,
         headings: { en: title },
         contents: { en: body },
-        included_segments: ['All'],
+        included_segments: ['All', 'Active Users', 'Subscribed'],
         data: data || {},
       }),
     });
