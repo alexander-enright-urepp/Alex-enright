@@ -46,7 +46,12 @@ export default function AdminPage() {
         .ilike('email', (user.email || '').trim())  // Case-insensitive + trim whitespace
         .single()
 
-      console.log('Admin check:', { userEmail: user.email, adminUser, adminError })
+      console.log('Admin check:', { 
+        userEmail: user.email, 
+        queryEmail: (user.email || '').trim(),
+        adminUser, 
+        adminError 
+      })
 
       if (!adminUser) {
         console.log('User not in admin_users, redirecting to home')
