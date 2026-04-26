@@ -43,7 +43,7 @@ export default function AdminPage() {
       const { data: adminUser, error: adminError } = await supabase
         .from('admin_users')
         .select('*')
-        .eq('email', user.email || '')
+        .ilike('email', (user.email || '').trim())  // Case-insensitive + trim whitespace
         .single()
 
       console.log('Admin check:', { userEmail: user.email, adminUser, adminError })
