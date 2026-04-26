@@ -65,7 +65,8 @@ export default function DailyPostsPage() {
     if (!error) {
       // Send push notification for new daily post
       try {
-        await fetch('/api/push/send', {
+        console.log('Sending push notification...');
+        const response = await fetch('/api/push/send', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -73,9 +74,11 @@ export default function DailyPostsPage() {
             body: title,
             data: { tab: 'daily', post_id: newPost?.id }
           })
-        })
+        });
+        const result = await response.json();
+        console.log('Push notification result:', result);
       } catch (pushError) {
-        console.error('Push notification error:', pushError)
+        console.error('Push notification error:', pushError);
         // Don't block on push failure
       }
       
