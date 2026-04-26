@@ -48,6 +48,7 @@ export default function DailyPostsPage() {
   const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
+    const form = e.currentTarget  // Save reference before async
     
     const title = formData.get('title') as string
     const body = formData.get('body') as string
@@ -79,12 +80,13 @@ export default function DailyPostsPage() {
         console.log('Push notification result:', result);
       } catch (pushError) {
         console.error('Push notification error:', pushError);
-        // Don't block on push failure
       }
       
       const data = await getDailyPosts()
       setPosts(data)
-      e.currentTarget.reset()
+      form.reset()  // Use saved reference
+    } else {
+      console.error('Post creation error:', error);
     }
   }
 
