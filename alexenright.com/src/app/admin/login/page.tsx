@@ -26,7 +26,12 @@ export default function AdminLogin() {
 
     if (error) {
       setError(error.message)
-    } else {
+    } else if (data?.session) {
+      // Set session in client before redirecting
+      await supabase.auth.setSession({
+        access_token: data.session.access_token,
+        refresh_token: data.session.refresh_token,
+      })
       router.push('/admin')
     }
     

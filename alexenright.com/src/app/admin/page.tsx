@@ -27,12 +27,15 @@ export default function AdminPage() {
   useEffect(() => {
     const checkAdmin = async () => {
       const supabase = createClient()
-      const { data: { user }, error: authError } = await supabase.auth.getUser()
       
-      console.log('Auth check:', { user, authError })
+      // Use getSession instead of getUser for client-side reliability
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession()
+      const user = session?.user
+      
+      console.log('Session check:', { session, user, sessionError })
       
       if (!user) {
-        console.log('No user found, redirecting to login')
+        console.log('No session user found, redirecting to login')
         router.push('/admin/login')
         return
       }
