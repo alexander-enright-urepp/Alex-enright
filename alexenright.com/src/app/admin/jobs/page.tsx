@@ -43,13 +43,29 @@ export default function JobsPage() {
     checkAdminAndLoad()
   }, [router, supabase])
 
-  const handleApprove = async (id: string) => {
+  const handleApprove = async (id: string, jobTitle: string, company: string) => {
     const { error } = await supabase
       .from('job_listings')
       .update({ approved: true })
       .eq('id', id)
 
     if (!error) {
+      // Send push notification for new job
+      try {
+        await fetch('/api/push/send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            title: 'New Job Posted',
+            body: `${jobTitle} at ${company}`,
+            data: { tab: 'community', job_id: id }
+          })
+        })
+      } catch (pushError) {
+        console.error('Push notification error:', pushError)
+        // Don't block on push failure
+      }
+      
       setJobs(jobs.filter(j => j.id !== id))
     }
   }
@@ -113,7 +129,7 @@ export default function JobsPage() {
                   
                   <div className="flex gap-2 ml-4">
                     <Button
-                      onClick={() => handleApprove(job.id)}
+                      onClick={() => handleApprove(job.id, job.title, job.company)}
                       className="bg-green-600 hover:bg-green-700"
                     >
                       Approve

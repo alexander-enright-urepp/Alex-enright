@@ -49,15 +49,36 @@ export default function DailyPostsPage() {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
     
-    const { error } = await supabase
+    const title = formData.get('title') as string
+    const body = formData.get('body') as string
+    
+    const { data: newPost, error } = await supabase
       .from('daily_posts')
       .insert({
-        title: formData.get('title') as string,
-        body: formData.get('body') as string,
+        title,
+        body,
         image_url: (formData.get('imageUrl') as string) || null,
       } as any)
+      .select()
+      .single()
 
     if (!error) {
+      // Send push notification for new daily post
+      try {
+        await fetch('/api/push/send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            title: 'New Daily Post',
+            body: title,
+            data: { tab: 'daily', post_id: newPost?.id }
+          })
+        })
+      } catch (pushError) {
+        console.error('Push notification error:', pushError)
+        // Don't block on push failure
+      }
+      
       const data = await getDailyPosts()
       setPosts(data)
       e.currentTarget.reset()

@@ -27,20 +27,26 @@ export default function AdminPage() {
   useEffect(() => {
     const checkAdmin = async () => {
       const supabase = createClient()
-      const { data: { user } } = await supabase.auth.getUser()
+      const { data: { user }, error: authError } = await supabase.auth.getUser()
+      
+      console.log('Auth check:', { user, authError })
       
       if (!user) {
+        console.log('No user found, redirecting to login')
         router.push('/admin/login')
         return
       }
 
-      const { data: adminUser } = await supabase
+      const { data: adminUser, error: adminError } = await supabase
         .from('admin_users')
         .select('*')
         .eq('email', user.email || '')
         .single()
 
+      console.log('Admin check:', { userEmail: user.email, adminUser, adminError })
+
       if (!adminUser) {
+        console.log('User not in admin_users, redirecting to home')
         router.push('/')
         return
       }
