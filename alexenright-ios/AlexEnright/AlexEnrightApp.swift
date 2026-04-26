@@ -10,6 +10,20 @@ struct AlexEnrightApp: App {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             OneSignal.Notifications.requestPermission { accepted in
                 print("Permission: \(accepted)")
+                
+                // Explicitly opt in to push notifications
+                if accepted {
+                    OneSignal.User.pushSubscription.optIn()
+                    print("Opted in to push")
+                }
+                
+                // Log OneSignal ID for debugging
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    let id = OneSignal.User.pushSubscription.id
+                    print("OneSignal Player ID: \(id ?? "nil")")
+                    print("OneSignal Token: \(OneSignal.User.pushSubscription.token ?? "nil")")
+                    print("Opted In: \(OneSignal.User.pushSubscription.optedIn)")
+                }
             }
         }
     }

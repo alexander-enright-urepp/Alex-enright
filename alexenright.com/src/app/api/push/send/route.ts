@@ -9,8 +9,9 @@ export async function POST(request: Request) {
     appId: process.env.ONESIGNAL_APP_ID ? 'Set' : 'Missing',
     apiKey: process.env.ONESIGNAL_REST_API_KEY ? 'Set' : 'Missing'
   });
+  
   try {
-    const { title, body, data } = await request.json();
+    const { title, body, data, include_player_ids } = await request.json();
 
     if (!title || !body) {
       return NextResponse.json(
@@ -19,19 +20,28 @@ export async function POST(request: Request) {
       );
     }
 
+    // Build OneSignal payload
+    const payload: any = {
+      app_id: ONESIGNAL_APP_ID,
+      headings: { en: title },
+      contents: { en: body },
+      data: data || {},
+    };
+
+    // If player IDs provided, target them directly, otherwise use segments
+    if (include_player_ids && include_player_ids.length > 0) {
+      payload.include_player_ids = include_player_ids;
+    } else {
+      payload.included_segments = ['All', 'Active Users', 'Subscribed'];
+    }
+
     const response = await fetch('https://onesignal.com/api/v1/notifications', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Basic ${ONESIGNAL_API_KEY}`,
       },
-      body: JSON.stringify({
-        app_id: ONESIGNAL_APP_ID,
-        headings: { en: title },
-        contents: { en: body },
-        included_segments: ['All', 'Active Users', 'Subscribed'],
-        data: data || {},
-      }),
+      body: JSON.stringify(payload),
     });
 
     const result = await response.json();
