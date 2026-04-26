@@ -4,6 +4,10 @@ const ONESIGNAL_APP_ID = process.env.ONESIGNAL_APP_ID!;
 const ONESIGNAL_API_KEY = process.env.ONESIGNAL_REST_API_KEY!;
 
 export async function POST(request: Request) {
+  // Log environment variables (remove after debugging)
+  console.log('ONESIGNAL_APP_ID:', process.env.ONESIGNAL_APP_ID ? 'Set' : 'Missing');
+  console.log('ONESIGNAL_API_KEY:', process.env.ONESIGNAL_REST_API_KEY ? 'Set' : 'Missing');
+  
   try {
     const { title, body, data, targetSegment = 'All' } = await request.json();
 
