@@ -345,7 +345,7 @@ class WebViewState: ObservableObject {
 extension Notification.Name {
     static let reloadWebView = Notification.Name("reloadWebView")
     static let goHome = Notification.Name("goHome")
-    static let navigateToURL = Notification.Name("navigateToURL")
+    static let navigateToURLNotification = Notification.Name("navigateToURL")
     static let showIAPPurchase = Notification.Name("showIAPPurchase")
     static let showIAPRestore = Notification.Name("showIAPRestore")
 }

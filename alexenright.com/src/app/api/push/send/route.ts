@@ -1,15 +1,11 @@
 import { NextResponse } from 'next/server';
 
-const ONESIGNAL_APP_ID = process.env.ONESIGNAL_APP_ID!;
-const ONESIGNAL_API_KEY = process.env.ONESIGNAL_REST_API_KEY!;
+const ONESIGNAL_APP_ID = process.env.ONESIGNAL_APP_ID;
+const ONESIGNAL_API_KEY = process.env.ONESIGNAL_REST_API_KEY;
 
 export async function POST(request: Request) {
-  // Log environment variables (remove after debugging)
-  console.log('ONESIGNAL_APP_ID:', process.env.ONESIGNAL_APP_ID ? 'Set' : 'Missing');
-  console.log('ONESIGNAL_API_KEY:', process.env.ONESIGNAL_REST_API_KEY ? 'Set' : 'Missing');
-  
   try {
-    const { title, body, data, targetSegment = 'All' } = await request.json();
+    const { title, body, data } = await request.json();
 
     if (!title || !body) {
       return NextResponse.json(
@@ -28,7 +24,7 @@ export async function POST(request: Request) {
         app_id: ONESIGNAL_APP_ID,
         headings: { en: title },
         contents: { en: body },
-        included_segments: [targetSegment],
+        included_segments: ['All'],
         data: data || {},
       }),
     });
