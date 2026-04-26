@@ -76,7 +76,19 @@ export default function DailyPostsPage() {
             data: { tab: 'daily', post_id: newPost?.id }
           })
         });
-        const result = await response.json();
+        
+        // Log the raw response for debugging
+        const responseText = await response.text();
+        console.log('Raw response:', responseText);
+        
+        let result;
+        try {
+          result = JSON.parse(responseText);
+        } catch (parseError) {
+          console.error('Failed to parse JSON:', responseText);
+          return;
+        }
+        
         console.log('Push notification result:', result);
       } catch (pushError) {
         console.error('Push notification error:', pushError);
