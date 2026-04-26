@@ -44,12 +44,17 @@ export default function RootLayout({
             gtag('config', 'G-PVH7JECM17');
           `}
         </Script>
-        {/* Google AdSense */}
+        {/* Google AdSense - Disabled auto ads, enable banner units later */}
+        {/* 
         <script 
           async 
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1262710570426029"
           crossOrigin="anonymous"
         />
+        */}
+        {/* Disable auto ads meta tag */}
+        <meta name="google-adsense-platform-account" content=""/>
+        <meta name="adsense-auto-ads" content="false"/>
       </head>
       <body className={inter.className}>
         <SessionProvider>
