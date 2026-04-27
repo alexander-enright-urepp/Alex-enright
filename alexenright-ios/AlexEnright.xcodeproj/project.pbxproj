@@ -15,6 +15,8 @@
 		F89415AC2F9E532C007D275A /* OneSignalFramework in Frameworks */ = {isa = PBXBuildFile; productRef = F89415AB2F9E532C007D275A /* OneSignalFramework */; };
 		F89415AE2F9E532C007D275A /* OneSignalInAppMessages in Frameworks */ = {isa = PBXBuildFile; productRef = F89415AD2F9E532C007D275A /* OneSignalInAppMessages */; };
 		F89415B02F9E532C007D275A /* OneSignalLocation in Frameworks */ = {isa = PBXBuildFile; productRef = F89415AF2F9E532C007D275A /* OneSignalLocation */; };
+		F89415B52F9ECC48007D275A /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = F89415B42F9ECC48007D275A /* RevenueCat */; };
+		F89415BB2F9ECE15007D275A /* RevenueCatManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F89415BA2F9ECE15007D275A /* RevenueCatManager.swift */; };
 		F898689C2F97CE3A0056B629 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F898689B2F97CE3A0056B629 /* StoreKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -25,6 +27,7 @@
 		D7A1A0042A3B2C0100000001 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D7A1A0092A3B2C0100000001 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F87016EC2F99629F0041F82A /* IAPManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPManager.swift; sourceTree = "<group>"; };
+		F89415BA2F9ECE15007D275A /* RevenueCatManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevenueCatManager.swift; sourceTree = "<group>"; };
 		F89868992F97CE2F0056B629 /* AlexEnright.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AlexEnright.entitlements; sourceTree = "<group>"; };
 		F898689B2F97CE3A0056B629 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -35,6 +38,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F898689C2F97CE3A0056B629 /* StoreKit.framework in Frameworks */,
+				F89415B52F9ECC48007D275A /* RevenueCat in Frameworks */,
 				F89415B02F9E532C007D275A /* OneSignalLocation in Frameworks */,
 				F89415AC2F9E532C007D275A /* OneSignalFramework in Frameworks */,
 				F89415AE2F9E532C007D275A /* OneSignalInAppMessages in Frameworks */,
@@ -65,6 +69,7 @@
 		D7A19FFF2A3B2C0000000001 /* AlexEnright */ = {
 			isa = PBXGroup;
 			children = (
+				F89415BA2F9ECE15007D275A /* RevenueCatManager.swift */,
 				F87016EC2F99629F0041F82A /* IAPManager.swift */,
 				F89868992F97CE2F0056B629 /* AlexEnright.entitlements */,
 				D7A1A0002A3B2C0000000001 /* AlexEnrightApp.swift */,
@@ -129,6 +134,7 @@
 			mainGroup = D7A19FF42A3B2C0000000001;
 			packageReferences = (
 				F89415A82F9E532C007D275A /* XCRemoteSwiftPackageReference "OneSignal-iOS-SDK" */,
+				F89415B12F9ECC48007D275A /* XCRemoteSwiftPackageReference "purchases-ios-spm" */,
 			);
 			productRefGroup = D7A19FFE2A3B2C0000000001 /* Products */;
 			projectDirPath = "";
@@ -158,6 +164,7 @@
 				F87016ED2F99629F0041F82A /* IAPManager.swift in Sources */,
 				D7A1A0032A3B2C0000000001 /* ContentView.swift in Sources */,
 				D7A1A0012A3B2C0000000001 /* AlexEnrightApp.swift in Sources */,
+				F89415BB2F9ECE15007D275A /* RevenueCatManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -385,6 +392,14 @@
 				minimumVersion = 5.5.0;
 			};
 		};
+		F89415B12F9ECC48007D275A /* XCRemoteSwiftPackageReference "purchases-ios-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RevenueCat/purchases-ios-spm.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.69.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -407,6 +422,26 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F89415A82F9E532C007D275A /* XCRemoteSwiftPackageReference "OneSignal-iOS-SDK" */;
 			productName = OneSignalLocation;
+		};
+		F89415B22F9ECC48007D275A /* ReceiptParser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F89415B12F9ECC48007D275A /* XCRemoteSwiftPackageReference "purchases-ios-spm" */;
+			productName = ReceiptParser;
+		};
+		F89415B42F9ECC48007D275A /* RevenueCat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F89415B12F9ECC48007D275A /* XCRemoteSwiftPackageReference "purchases-ios-spm" */;
+			productName = RevenueCat;
+		};
+		F89415B62F9ECC48007D275A /* RevenueCatUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F89415B12F9ECC48007D275A /* XCRemoteSwiftPackageReference "purchases-ios-spm" */;
+			productName = RevenueCatUI;
+		};
+		F89415B82F9ECC48007D275A /* RevenueCat_CustomEntitlementComputation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F89415B12F9ECC48007D275A /* XCRemoteSwiftPackageReference "purchases-ios-spm" */;
+			productName = RevenueCat_CustomEntitlementComputation;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

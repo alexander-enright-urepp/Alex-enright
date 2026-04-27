@@ -29,6 +29,12 @@ const CommunityIcon = ({ className }: { className?: string }) => (
   </svg>
 )
 
+const NewsIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2.5 2.5 0 00-2.5-2.5H14" />
+  </svg>
+)
+
 const AboutIcon = ({ className }: { className?: string }) => (
   <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -36,7 +42,7 @@ const AboutIcon = ({ className }: { className?: string }) => (
 )
 
 const navItems = [
-  { id: 'agent' as TabType, label: 'Agent', Icon: AgentIcon },
+  { id: 'news' as TabType, label: 'News', Icon: NewsIcon },
   { id: 'play' as TabType, label: 'Play', Icon: PlayIcon },
   { id: 'daily' as TabType, label: 'Daily', Icon: DailyIcon },
   { id: 'community' as TabType, label: 'Community', Icon: CommunityIcon },

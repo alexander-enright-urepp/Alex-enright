@@ -1,13 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { TabType } from '@/types'
+import { useState } from 'react'
 import { BottomNav } from '@/components/navigation/BottomNav'
 import { RecruiterTab } from '@/components/tabs/RecruiterTab'
 import { PlayTab } from '@/components/tabs/PlayTab'
 import { DailyTab } from '@/components/tabs/DailyTab'
 import { CommunityTab } from '@/components/tabs/CommunityTab'
 import { AboutTab } from '@/components/tabs/AboutTab'
+import { NewsTab } from '@/components/tabs/NewsTab'
 import { Modal } from '@/components/ui/Modal'
 
 export default function Home() {

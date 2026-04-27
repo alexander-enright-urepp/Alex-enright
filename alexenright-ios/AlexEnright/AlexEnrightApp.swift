@@ -7,6 +7,9 @@ struct AlexEnrightApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     init() {
+        // Initialize RevenueCat first
+        RevenueCatManager.shared.configure()
+        
         // Initialize OneSignal (no verbose logging)
         OneSignal.initialize("0a9c2637-a51d-4919-a76a-0660bb41b081", withLaunchOptions: nil)
     }

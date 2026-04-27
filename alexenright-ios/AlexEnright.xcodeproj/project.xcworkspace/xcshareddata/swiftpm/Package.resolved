@@ -1,5 +1,5 @@
 {
-  "originHash" : "9d514f78689aebbc7d632682de3b7d2f15dc43b006d47cb0650c98d174c8faed",
+  "originHash" : "0c3cb46f9f1f65292cd62c0ff83d61c11e9e614ec8c03c5468ccbcb700867e93",
   "pins" : [
     {
       "identity" : "onesignal-ios-sdk",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "d21c96dfc34dfffc94875adb965de25f62c99eb0",
         "version" : "5.5.0"
+      }
+    },
+    {
+      "identity" : "purchases-ios-spm",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/RevenueCat/purchases-ios-spm.git",
+      "state" : {
+        "revision" : "a06accc1543fcedc3094d4b5b9a40b84e2213e8e",
+        "version" : "5.69.0"
       }
     }
   ],

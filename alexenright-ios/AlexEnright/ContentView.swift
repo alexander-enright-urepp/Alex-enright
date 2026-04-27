@@ -23,8 +23,16 @@ struct ContentView: View {
                 WebView(
                     url: URL(string: "https://alexenright.com")!,
                     onExternalLink: { url in
-                        safariURL = url
-                        showSafari = true
+                        // Ensure URL is valid and properly formatted
+                        guard url.absoluteString.hasPrefix("http") else {
+                            print("Invalid external link URL: \(url.absoluteString)")
+                            return
+                        }
+                        // Small delay to ensure UI is ready
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            safariURL = url
+                            showSafari = true
+                        }
                     },
                     onCommunityPageDetected: { isCommunity in
                         // Could use this to conditionally show + button
@@ -86,7 +94,8 @@ struct ContentView: View {
             }
         }
             .sheet(isPresented: $showSafari) {
-            if let url = safariURL {
+            // Only show SafariView if we have a valid URL
+            if let url = safariURL, url.absoluteString.hasPrefix("http") {
                 SafariView(url: url)
             }
         }
@@ -313,23 +322,29 @@ struct WebView: UIViewRepresentable {
         }
 
         func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-            if let url = navigationAction.request.url {
-                let urlString = url.absoluteString
-
-                // Allow Spotify embeds to load in webview
-                if urlString.contains("spotify.com/embed") || urlString.contains("open.spotify.com") {
-                    decisionHandler(.allow)
-                    return
-                }
-
-                // Handle external links - open in-app instead of externally
-                if let host = url.host, !host.contains("alexenright.com") {
-                    // Open external links in-app sheet instead of external Safari
-                    parent.onExternalLink(url)
-                    decisionHandler(.cancel)
-                    return
-                }
+            guard let url = navigationAction.request.url else {
+                decisionHandler(.allow)
+                return
             }
+            
+            let urlString = url.absoluteString
+
+            // Allow Spotify embeds to load in webview
+            if urlString.contains("spotify.com/embed") || urlString.contains("open.spotify.com") {
+                decisionHandler(.allow)
+                return
+            }
+
+            // Handle external links - open in-app sheet
+            if let host = url.host, !host.contains("alexenright.com") {
+                // Ensure we're not already showing a sheet
+                DispatchQueue.main.async {
+                    self.parent.onExternalLink(url)
+                }
+                decisionHandler(.cancel)
+                return
+            }
+            
             decisionHandler(.allow)
         }
     }
