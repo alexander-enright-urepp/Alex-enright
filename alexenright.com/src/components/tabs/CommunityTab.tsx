@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { JobListing, DailyPost } from '@/types'
 import { getJobListings, submitJobListing } from '@/app/actions/community'
 import { getDailyPosts, getDailyPostsWithLikes, toggleLikePost } from '@/app/actions/daily'
+import { getAllJobs } from '@/app/actions/jobs-himalayas'
 import { Textarea } from '@/components/ui/Textarea'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
@@ -27,8 +28,8 @@ export function CommunityTab() {
   async function loadJobs() {
     setIsLoading(true)
     try {
-      const jobsData = await getJobListings()
-      console.log('Loaded jobs:', jobsData) // Debug log
+      const jobsData = await getAllJobs()
+      console.log('Loaded jobs:', jobsData)
       setJobs(jobsData || [])
     } catch (error) {
       console.error('Error loading jobs:', error)
