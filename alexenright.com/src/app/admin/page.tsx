@@ -82,21 +82,25 @@ export default function AdminPage() {
     setRefreshing(true)
     try {
       // Fetch news
-      await fetch('/api/news/fetch', {
+      const newsRes = await fetch('/api/news/fetch', {
         method: 'POST',
         headers: { 'Authorization': 'Bearer f89949139a3bffa30c8f524e920eda657c406d965c89e3a478032f3968533bfd' }
       })
+      const newsData = await newsRes.json()
+      console.log('News fetch:', newsData)
       
       // Fetch scores
-      await fetch('/api/scores/fetch', {
+      const scoresRes = await fetch('/api/scores/fetch', {
         method: 'POST',
         headers: { 'Authorization': 'Bearer f89949139a3bffa30c8f524e920eda657c406d965c89e3a478032f3968533bfd' }
       })
+      const scoresData = await scoresRes.json()
+      console.log('Scores fetch:', scoresData)
       
-      alert('Content refreshed! Check News and Scores tabs.')
-      window.location.reload()
+      alert(`News: fetched=${newsData.fetched}, unique=${newsData.unique}, inserted=${newsData.inserted}, errors=${newsData.errors?.join(', ') || 'none'}`)
     } catch (err) {
-      alert('Error refreshing content: ' + err)
+      alert('Error: ' + err)
+      console.error(err)
     }
     setRefreshing(false)
   }
