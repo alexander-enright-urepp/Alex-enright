@@ -1,13 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { JobListing } from '@/types'
 import { getJobListings, submitJobListing } from '@/app/actions/community'
-import { submitContactForm } from '@/app/actions/contact'
 import { Textarea } from '@/components/ui/Textarea'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
+import { submitContactForm } from '@/app/actions/contact'
 
 type TabView = 'jobs' | 'submit-job' | 'hire-alex'
 
@@ -96,6 +96,7 @@ export function CommunityTab() {
         {[
           { id: 'jobs', label: 'Jobs' },
           { id: 'submit-job', label: 'Post a Job' },
+          { id: 'hire-alex', label: 'Hire Alex' },
         ].map((tab) => (
           <button
             key={tab.id}
@@ -189,6 +190,145 @@ export function CommunityTab() {
           <Button type="submit" className="w-full">Submit for Approval</Button>
         </form>
       )}
+
+      {activeView === 'hire-alex' && <HireAlexForm />}
     </div>
+  )
+}
+
+// Hire Alex Form Component
+function HireAlexForm() {
+  const [serviceType, setServiceType] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [status, setStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
+
+  const services = [
+    { value: 'job', label: 'Job Opportunity', icon: '💼' },
+    { value: 'app', label: 'Build an App', icon: '📱' },
+    { value: 'logo', label: 'Logo Design', icon: '🎨' },
+    { value: 'creative', label: 'Creative Project', icon: '✨' },
+    { value: 'call', label: 'Schedule a Call', icon: '📞' },
+    { value: 'donate', label: 'Donate', icon: '❤️' },
+  ]
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    setStatus(null)
+
+    const formData = new FormData(e.currentTarget)
+    
+    try {
+      const result = await submitContactForm(formData)
+      
+      if (result.success) {
+        setShowSuccessModal(true)
+        e.currentTarget.reset()
+        setServiceType('')
+      } else {
+        setStatus({ type: 'error', message: result.error || 'Something went wrong. Please try again.' })
+      }
+    } catch (err) {
+      setStatus({ type: 'error', message: 'Network error. Please check your connection and try again.' })
+    }
+    
+    setIsSubmitting(false)
+  }
+
+  return (
+    <>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Service Type Selection */}
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">What do you need? *</label>
+          <div className="grid grid-cols-2 gap-2">
+            {services.map((service) => (
+              <button
+                key={service.value}
+                type="button"
+                onClick={() => setServiceType(service.value)}
+                className={`p-3 rounded-xl border text-center transition-colors ${
+                  serviceType === service.value
+                    ? 'border-accent bg-accent/5 text-accent'
+                    : 'border-gray-200 hover:border-accent/50'
+                }`}
+              >
+                <div className="text-2xl mb-1">{service.icon}</div>
+                <div className="text-sm font-medium">{service.label}</div>
+              </button>
+            ))}
+          </div>
+          <input type="hidden" name="service" value={serviceType} required />
+        </div>
+
+        <Input
+          name="name"
+          label="Your Name *"
+          placeholder="John Smith"
+          required
+        />
+
+        <Input
+          name="email"
+          type="email"
+          label="Email *"
+          placeholder="john@company.com"
+          required
+        />
+
+        <Input
+          name="budget"
+          label="Budget (optional)"
+          placeholder="$5,000 - $10,000"
+        />
+
+        <Textarea
+          name="details"
+          label="Project Details *"
+          placeholder="Tell me about your project..."
+          rows={4}
+          required
+        />
+
+        {status?.type === 'error' && (
+          <div className="p-4 rounded-lg bg-red-50 text-red-800">
+            {status.message}
+          </div>
+        )}
+
+        <Button
+          type="submit"
+          className="w-full"
+          isLoading={isSubmitting}
+          disabled={!serviceType}
+        >
+          Submit Request
+        </Button>
+      </form>
+
+      {/* Success Modal */}
+      <Modal
+        isOpen={showSuccessModal}
+        onClose={() => setShowSuccessModal(false)}
+        title="Success!"
+      >
+        <div className="text-center py-6">
+          <div className="text-5xl mb-4">🎉</div>
+          <p className="text-lg font-medium text-gray-900 mb-2">
+            Request Submitted!
+          </p>
+          <p className="text-gray-600">
+            I'll get back to you within 24 hours.
+          </p>
+          <Button
+            onClick={() => setShowSuccessModal(false)}
+            className="mt-6 w-full"
+          >
+            Close
+          </Button>
+        </div>
+      </Modal>
+    </>
   )
 }
