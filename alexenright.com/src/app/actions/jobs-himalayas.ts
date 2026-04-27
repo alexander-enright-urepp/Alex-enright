@@ -26,14 +26,19 @@ export async function getAllJobs(): Promise<Array<JobListing & { source: 'alexen
       const data = await response.json()
       // Transform Himalayas jobs to match your format
       himalayasJobs = data.jobs?.map((job: any) => ({
-        id: `himalayas-${job.id}`,
+        id: `himalayas-${job.guid}`,
         title: job.title,
-        company: job.company?.name || 'Remote Company',
-        location: job.location || 'Remote',
-        description: job.excerpt || job.description?.substring(0, 200) + '...',
-        salary_range: job.salary || null,
-        apply_url: job.url,
-        listing_date: job.published_at,
+        company: job.companyName || 'Remote Company',
+        company_logo: job.companyLogo || null,
+        location: job.locationRestrictions?.join(', ') || 'Remote',
+        description: job.excerpt || job.description?.substring(0, 300) + '...',
+        salary_range: job.minSalary && job.maxSalary 
+          ? `$${job.minSalary.toLocaleString()} - $${job.maxSalary.toLocaleString()} ${job.currency || 'USD'}`
+          : null,
+        employment_type: job.employmentType || null,
+        seniority: job.seniority?.join(', ') || null,
+        apply_url: job.applicationLink || job.guid,
+        listing_date: new Date(job.pubDate * 1000).toISOString(),
         duration_start: null,
         approved: true,
         source: 'himalayas' as const

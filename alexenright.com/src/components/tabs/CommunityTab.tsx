@@ -20,6 +20,8 @@ export function CommunityTab() {
   const [isLoading, setIsLoading] = useState(true)
   const [showJobSuccessModal, setShowJobSuccessModal] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
+  const [selectedJob, setSelectedJob] = useState<any | null>(null)
+  const [showJobDetailModal, setShowJobDetailModal] = useState(false)
 
   useEffect(() => {
     loadJobs()
@@ -130,21 +132,75 @@ export function CommunityTab() {
           ) : (
             jobs.map((job: any) => (
               <div key={job.id} className="bg-white rounded-xl border p-4">
+                {/* Source Badge */}
+                {job.source === 'himalayas' && (
+                  <span className="inline-block px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full mb-2">
+                    From Himalayas.app
+                  </span>
+                )}
+                {job.source === 'alexenright' && (
+                  <span className="inline-block px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full mb-2">
+                    AlexEnright Approved
+                  </span>
+                )}
+                
+                {/* Company Logo */}
+                {job.company_logo && (
+                  <img 
+                    src={job.company_logo} 
+                    alt={job.company}
+                    className="w-12 h-12 object-contain mb-2 rounded"
+                  />
+                )}
+                
                 <h3 className="font-semibold text-lg">{job.title}</h3>
                 <p className="text-accent font-medium">{job.company}</p>
-                <p className="text-sm text-gray-600">{job.location}</p>
-                {job.salary_range && <p className="text-green-600 text-sm font-medium">{job.salary_range}</p>}
-                <p className="text-gray-700 mt-2 text-sm">{job.description}</p>
-                {job.apply_url && (
-                  <a 
-                    href={job.apply_url} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="inline-block mt-3 text-accent hover:underline text-sm font-medium"
+                <div className="flex items-center gap-2 text-sm text-gray-600 mt-1">
+                  <span>{job.location}</span>
+                  {job.employment_type && <>
+                    <span>•</span>
+                    <span>{job.employment_type}</span>
+                  </>}
+                </div>
+                
+                {job.salary_range && <p className="text-green-600 text-sm font-medium mt-2">{job.salary_range}</p>}
+                {job.seniority && <p className="text-blue-600 text-xs mt-1">{job.seniority}</p>}
+                
+                <p className="text-gray-700 mt-2 text-sm line-clamp-3">{job.description}</p>
+                
+                <div className="flex gap-2 mt-3">
+                  <button
+                    onClick={() => {
+                      setSelectedJob(job)
+                      setShowJobDetailModal(true)
+                    }}
+                    className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors"
                   >
-                    Apply Now →
-                  </a>
-                )}
+                    View Details
+                  </button>
+                  
+                  {job.source === 'alexenright' ? (
+                    <button
+                      onClick={() => {
+                        // Open recruiter form in new tab
+                        window.open(`https://alexenright.com/?apply=${encodeURIComponent(job.title)}`, '_blank')
+                      }}
+                      className="px-4 py-2 bg-accent text-white rounded-lg text-sm font-medium hover:bg-accent-dark transition-colors"
+                    >
+                      Apply
+                    </button>
+                  ) : job.apply_url ? (
+                    <a 
+                      href={job.apply_url} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors inline-flex items-center"
+                    >
+                      Apply →
+                    </a>
+                  ) : null}
+                </div>
+                
                 <p className="text-xs text-gray-400 mt-2">
                   Listed: {job.listing_date ? new Date(job.listing_date).toLocaleDateString() : 'N/A'}
                   {job.duration_start && ` | Duration: ${new Date(job.duration_start).toLocaleDateString()}`}
@@ -198,6 +254,13 @@ export function CommunityTab() {
       {activeView === 'hire-alex' && <HireAlexForm />}
 
       {activeView === 'daily' && <DailyFeed />}
+
+      {/* Job Detail Modal */}
+      <JobDetailModal 
+        job={selectedJob}
+        isOpen={showJobDetailModal}
+        onClose={() => setShowJobDetailModal(false)}
+      />
     </div>
   )
 }
@@ -451,5 +514,98 @@ function DailyFeed() {
         ))
       )}
     </div>
+  )
+}
+
+// Job Detail Modal Component
+function JobDetailModal({ job, isOpen, onClose }: { job: any; isOpen: boolean; onClose: () => void }) {
+  if (!job) return null
+  
+  return (
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      title={job.title}
+    >
+      <div className="space-y-4 max-h-[70vh] overflow-y-auto">
+        {/* Source Badge */}
+        {job.source === 'himalayas' && (
+          <span className="inline-block px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">
+            From Himalayas.app
+          </span>
+        )}
+        {job.source === 'alexenright' && (
+          <span className="inline-block px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">
+            AlexEnright Approved
+          </span>
+        )}
+        
+        {/* Company Logo */}
+        {job.company_logo && (
+          <img 
+            src={job.company_logo} 
+            alt={job.company}
+            className="w-16 h-16 object-contain rounded"
+          />
+        )}
+        
+        <div>
+          <p className="text-accent font-medium">{job.company}</p>
+          <div className="flex items-center gap-2 text-sm text-gray-600">
+            <span>{job.location}</span>
+            {job.employment_type && <>
+              <span>•</span>
+              <span>{job.employment_type}</span>
+            </>}
+          </div>
+        </div>
+        
+        {job.salary_range && (
+          <p className="text-green-600 font-medium">{job.salary_range}</p>
+        )}
+        
+        {job.seniority && (
+          <p className="text-blue-600 text-sm">{job.seniority}</p>
+        )}
+        
+        <div className="prose prose-sm max-w-none">
+          <h4 className="font-semibold text-sm">Description</h4>
+          <p className="text-sm text-gray-700 whitespace-pre-wrap">
+            {job.description?.replace(/<[^>]*>/g, '') || 'No description available'}
+          </p>
+        </div>
+        
+        <div className="flex gap-3 pt-4">
+          <button
+            onClick={onClose}
+            className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors"
+          >
+            Close
+          </button>
+          
+          {job.source === 'alexenright' ? (
+            <button
+              onClick={() => {
+                onClose()
+                window.open(`https://alexenright.com/?apply=${encodeURIComponent(job.title)}`, '_blank')
+              }}
+              className="flex-1 px-4 py-2 bg-accent text-white rounded-lg font-medium hover:bg-accent-dark transition-colors"
+            >
+              Apply
+            </button>
+          ) : job.apply_url ? (
+            <a 
+              href={job.apply_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={onClose}
+              className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors text-center"
+            >
+              Apply →
+            </a>
+          ) : null}
+        </div>
+      </div>
+    </Modal>
   )
 }
