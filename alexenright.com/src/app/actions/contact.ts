@@ -15,16 +15,18 @@ interface ContactFormData {
 export async function submitContactForm(data: ContactFormData) {
   const supabase = await createClient()
   
+  const insertData: any = {
+    type: data.type,
+    name: data.name || null,
+    email: data.email || null,
+    phone: data.phone || null,
+    budget: data.budget || null,
+    message: data.message,
+  }
+  
   const { error } = await supabase
     .from('contact_submissions')
-    .insert({
-      type: data.type,
-      name: data.name || null,
-      email: data.email || null,
-      phone: data.phone || null,
-      budget: data.budget || null,
-      message: data.message,
-    })
+    .insert(insertData)
 
   if (error) {
     console.error('Contact form error:', error)
