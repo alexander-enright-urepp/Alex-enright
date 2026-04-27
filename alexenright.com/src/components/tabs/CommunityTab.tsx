@@ -408,10 +408,11 @@ function DailyFeed() {
               </div>
             </div>
             
-            {/* DEBUG: Show raw content */}
-            {console.log('Post content:', post.content)}
+            <!-- DEBUG: Show raw post data -->
+            {console.log('Post data:', post)}
             
-            <p className="text-gray-800 mb-3 whitespace-pre-wrap break-words">{post.content || 'No content'}</p>
+            <h3 className="font-bold text-lg mb-2">{post.title}</h3>
+            <p className="text-gray-800 mb-3 whitespace-pre-wrap break-words">{post.body || 'No content'}</p>
             
             {post.image_url && (
               <img 
