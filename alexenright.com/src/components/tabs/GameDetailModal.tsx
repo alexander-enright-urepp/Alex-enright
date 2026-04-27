@@ -357,8 +357,10 @@ export function GameDetailModal({ game, isOpen, onClose }: GameDetailModalProps)
                     </thead>
                     <tbody>
                       {summary.boxscore.teams[1]?.statistics?.slice(0, 6).map((stat, idx) => {
-                        const awayStat = summary.boxscore.teams[1].statistics[idx]
-                        const homeStat = summary.boxscore.teams[0].statistics[idx]
+                        const awayStats = summary?.boxscore?.teams?.[1]?.statistics
+                        const homeStats = summary?.boxscore?.teams?.[0]?.statistics
+                        const awayStat = awayStats?.[idx]
+                        const homeStat = homeStats?.[idx]
                         return (
                           <tr key={idx} className="border-b border-gray-100 last:border-0">
                             <td className="py-2 px-3 text-gray-600">{stat.label}</td>
