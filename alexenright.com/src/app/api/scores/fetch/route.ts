@@ -6,20 +6,15 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
 
-const THESPORTSDB_KEY = process.env.THESPORTSDB_API_KEY || '123'
-
-// Major leagues to fetch (free API supports these)
-const LEAGUES = [
-  { id: '4328', name: 'English Premier League', sport: 'Soccer' },
-  { id: '4387', name: 'NBA', sport: 'Basketball' },
-  { id: '4391', name: 'NFL', sport: 'American Football' },
-  { id: '4424', name: 'MLB', sport: 'Baseball' },
-  { id: '4401', name: 'NHL', sport: 'Ice Hockey' },
-  { id: '4335', name: 'Spanish La Liga', sport: 'Soccer' },
-  { id: '4332', name: 'Italian Serie A', sport: 'Soccer' },
-  { id: '4334', name: 'French Ligue 1', sport: 'Soccer' },
-  { id: '4331', name: 'German Bundesliga', sport: 'Soccer' },
-  { id: '4481', name: 'MLS', sport: 'Soccer' },
+// ESPN Sports/Leagues to fetch
+const ESPN_LEAGUES = [
+  { sport: 'football', league: 'nfl', name: 'NFL' },
+  { sport: 'basketball', league: 'nba', name: 'NBA' },
+  { sport: 'baseball', league: 'mlb', name: 'MLB' },
+  { sport: 'hockey', league: 'nhl', name: 'NHL' },
+  { sport: 'soccer', league: 'eng.1', name: 'Premier League' },
+  { sport: 'soccer', league: 'usa.1', name: 'MLS' },
+  { sport: 'soccer', league: 'esp.1', name: 'La Liga' },
 ]
 
 export async function POST(request: Request) {
@@ -32,17 +27,11 @@ export async function POST(request: Request) {
   const events: any[] = []
   const errors: string[] = []
 
-  // Get today's date and next 7 days
-  const today = new Date()
-  const nextWeek = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000)
-  
-  const formatDate = (date: Date) => date.toISOString().split('T')[0]
-
-  // Fetch events for each league
-  for (const league of LEAGUES) {
+  // Fetch from ESPN for each league
+  for (const league of ESPN_LEAGUES) {
     try {
       const response = await fetch(
-        `https://www.thesportsdb.com/api/v1/json/${THESPORTSDB_KEY}/eventsnext7.php?id=${league.id}`
+        `https://site.api.espn.com/apis/site/v2/sports/${league.sport}/${league.league}/scoreboard`
       )
       
       if (!response.ok) {
@@ -54,21 +43,26 @@ export async function POST(request: Request) {
       
       if (data.events) {
         data.events.forEach((event: any) => {
+          const homeTeam = event.competitions?.[0]?.competitors?.find((c: any) => c.homeAway === 'home')
+          const awayTeam = event.competitions?.[0]?.competitors?.find((c: any) => c.homeAway === 'away')
+          
+          if (!homeTeam || !awayTeam) return
+
           events.push({
-            event_id: event.idEvent,
+            event_id: event.id,
             sport: league.sport,
             league: league.name,
-            home_team: event.strHomeTeam,
-            away_team: event.strAwayTeam,
-            home_score: event.intHomeScore || null,
-            away_score: event.intAwayScore || null,
-            status: event.strStatus || 'Scheduled',
-            date_event: `${event.dateEvent} ${event.strTime || '00:00:00'}`,
-            time_event: event.strTime,
-            venue: event.strVenue,
-            thumb_home: event.strThumb || null,
-            thumb_away: event.strThumb || null,
-            video_url: event.strVideo || null
+            home_team: homeTeam.team?.displayName || homeTeam.team?.name || 'Unknown',
+            away_team: awayTeam.team?.displayName || awayTeam.team?.name || 'Unknown',
+            home_score: homeTeam.score || null,
+            away_score: awayTeam.score || null,
+            status: event.status?.type?.shortDetail || event.status?.type?.name || 'Scheduled',
+            date_event: new Date(event.date).toISOString(),
+            time_event: new Date(event.date).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }),
+            venue: event.competitions?.[0]?.venue?.fullName || null,
+            thumb_home: homeTeam.team?.logo || null,
+            thumb_away: awayTeam.team?.logo || null,
+            video_url: null
           })
         })
       }
@@ -77,63 +71,15 @@ export async function POST(request: Request) {
     }
   }
 
-  // Also try to get live scores (may not work with free API)
-  try {
-    const liveResponse = await fetch(
-      `https://www.thesportsdb.com/api/v1/json/${THESPORTSDB_KEY}/latestevent.php`
-    )
-    const liveData = await liveResponse.json()
-    
-    if (liveData.events) {
-      liveData.events.forEach((event: any) => {
-        // Check if event already exists
-        const exists = events.some(e => e.event_id === event.idEvent)
-        if (!exists) {
-          events.push({
-            event_id: event.idEvent,
-            sport: event.strSport,
-            league: event.strLeague,
-            home_team: event.strHomeTeam,
-            away_team: event.strAwayTeam,
-            home_score: event.intHomeScore || null,
-            away_score: event.intAwayScore || null,
-            status: event.strStatus || 'Live',
-            date_event: `${event.dateEvent} ${event.strTime || '00:00:00'}`,
-            time_event: event.strTime,
-            venue: event.strVenue,
-            thumb_home: event.strThumb || null,
-            thumb_away: event.strThumb || null,
-            video_url: event.strVideo || null
-          })
-        }
-      })
-    }
-  } catch (error) {
-    errors.push(`Live scores error: ${error}`)
-  }
-
-  // Remove duplicates
-  const uniqueEvents = events.filter((event, index, self) =>
-    index === self.findIndex((e) => e.event_id === event.event_id)
-  )
-
   // Sort by date
-  uniqueEvents.sort((a, b) => 
-    new Date(a.date_event).getTime() - new Date(b.date_event).getTime()
-  )
+  events.sort((a, b) => new Date(a.date_event).getTime() - new Date(b.date_event).getTime())
 
   // Insert into database
-  if (uniqueEvents.length > 0) {
-    // Clear old future events
-    await supabase
-      .from('sports_scores')
-      .delete()
-      .gte('date_event', formatDate(today))
-
+  if (events.length > 0) {
     // Insert new events
     const { error: insertError } = await supabase
       .from('sports_scores')
-      .upsert(uniqueEvents, { onConflict: 'event_id' })
+      .upsert(events, { onConflict: 'event_id' })
 
     if (insertError) {
       errors.push(`Insert error: ${insertError.message}`)
@@ -142,7 +88,7 @@ export async function POST(request: Request) {
 
   return NextResponse.json({
     success: true,
-    fetched: uniqueEvents.length,
+    fetched: events.length,
     errors: errors.length > 0 ? errors : undefined
   })
 }
