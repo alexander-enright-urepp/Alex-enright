@@ -18,7 +18,7 @@ export async function GET() {
   }
 
   // Get unique sports
-  const sports = [...new Set(data?.map(s => s.sport) || [])]
+  const sports = Array.from(new Set(data?.map(s => s.sport) || []))
 
   return NextResponse.json({
     total: data?.length || 0,
