@@ -181,7 +181,7 @@ export function ScoresTab() {
                 <span>{formatTime(score.date_event)}</span>
               </div>
             </div>
-          ))}
+          ))
         )}
       </div>
 
