@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { JobListing, DailyPost } from '@/types'
 import { getJobListings, submitJobListing } from '@/app/actions/community'
-import { getDailyPosts, likeDailyPost } from '@/app/actions/daily'
+import { getDailyPosts, toggleLikePost } from '@/app/actions/daily'
 import { Textarea } from '@/components/ui/Textarea'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
@@ -99,7 +99,7 @@ export function CommunityTab() {
           { id: 'jobs', label: 'Jobs' },
           { id: 'submit-job', label: 'Post a Job' },
           { id: 'hire-alex', label: 'Hire Alex' },
-          { id: 'daily', label: 'Daily' },
+          { id: 'daily', label: 'Updates' },
         ].map((tab) => (
           <button
             key={tab.id}
@@ -355,7 +355,7 @@ function DailyFeed() {
   }
 
   async function handleLike(postId: string, hasLiked: boolean) {
-    const result = await likeDailyPost(postId, hasLiked)
+    const result = await toggleLikePost(postId, hasLiked)
     if (result.success) {
       setPosts(posts.map(p => 
         p.id === postId 

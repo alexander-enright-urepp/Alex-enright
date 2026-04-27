@@ -37,7 +37,7 @@ const AboutIcon = ({ className }: { className?: string }) => (
 
 const navItems = [
   { id: 'news' as TabType, label: 'News', Icon: NewsIcon },
-  { id: 'play' as TabType, label: 'Play', Icon: PlayIcon },
+  { id: 'play' as TabType, label: 'Games', Icon: PlayIcon },
   { id: 'scores' as TabType, label: 'Scores', Icon: ScoresIcon },
   { id: 'community' as TabType, label: 'Community', Icon: CommunityIcon },
   { id: 'about' as TabType, label: 'About', Icon: AboutIcon },
