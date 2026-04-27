@@ -15,6 +15,22 @@ export type DailyPostWithLikes = DailyPost & {
   has_liked: boolean
 }
 
+export type NewsStory = {
+  id: string
+  title: string
+  summary: string | null
+  content: string | null
+  source: string
+  source_url: string
+  image_url: string | null
+  published_at: string
+  category: string | null
+  author: string | null
+  created_at: string
+  updated_at: string
+  api_source: string
+}
+
 // Game types
 export type GameType = 'coin-flip' | 'dice-roll' | 'rps' | 'tic-tac-toe' | 'snake' | 'magic8ball' | 'fortune-cookie' | 'slot-machine' | 'hangman'
 
