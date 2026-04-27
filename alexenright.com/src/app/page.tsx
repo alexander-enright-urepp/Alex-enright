@@ -371,6 +371,82 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Section 6: Play Games - White */}
+      <section className="bg-white py-24">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-col lg:flex-row items-center gap-16">
+            <div className="lg:w-1/2">
+              <div className="bg-gray-100 rounded-3xl p-8 shadow-2xl">
+                <div className="bg-white rounded-2xl overflow-hidden shadow-lg">
+                  <div className="bg-red-600 text-white px-4 py-3 flex items-center gap-2">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span className="font-bold">Play</span>
+                  </div>
+                  <div className="p-4 space-y-4">
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-4 text-white text-center cursor-pointer hover:scale-105 transition-transform">
+                        <svg className="w-8 h-8 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" />
+                        </svg>
+                        <span className="font-bold text-sm">Tic Tac Toe</span>
+                      </div>
+                      <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-4 text-white text-center cursor-pointer hover:scale-105 transition-transform">
+                        <svg className="w-8 h-8 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                        </svg>
+                        <span className="font-bold text-sm">Snake</span>
+                      </div>
+                      <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-4 text-white text-center cursor-pointer hover:scale-105 transition-transform">
+                        <svg className="w-8 h-8 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                        <span className="font-bold text-sm">Pong</span>
+                      </div>
+                      <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl p-4 text-white text-center cursor-pointer hover:scale-105 transition-transform">
+                        <svg className="w-8 h-8 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                        </svg>
+                        <span className="font-bold text-sm">More Soon</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="lg:w-1/2">
+              <h2 className="text-4xl font-bold text-gray-900 mb-6">Pass Time with Games</h2>
+              <p className="text-xl text-gray-600 mb-6">
+                Take a break and play classic arcade games right in the app. 
+                Perfect for killing time during commutes or while waiting.
+              </p>
+              <ul className="space-y-3 text-gray-700">
+                <li className="flex items-center gap-3">
+                  <svg className="w-6 h-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  Classic games: Tic Tac Toe, Snake, Pong
+                </li>
+                <li className="flex items-center gap-3">
+                  <svg className="w-6 h-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  No downloads needed - play instantly
+                </li>
+                <li className="flex items-center gap-3">
+                  <svg className="w-6 h-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  More games added regularly
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Footer - White */}
       <footer className="bg-white py-12 border-t border-gray-200">
         <div className="container mx-auto px-6 text-center">

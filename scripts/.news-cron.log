@@ -16,3 +16,21 @@ Result: {
     "nytimes": 0
   }
 }
+[2026-04-27T19:04:11.757Z] [INFO] === News Fetch Started ===
+[2026-04-27T19:04:11.975Z] [WARN] NewsAPI key not configured, skipping
+[2026-04-27T19:04:12.212Z] [WARN] GNews key not configured, skipping
+[2026-04-27T19:04:12.321Z] [WARN] NYTimes key not configured, skipping
+[2026-04-27T19:04:12.332Z] [INFO] Found 0 new unique stories
+[2026-04-27T19:04:12.344Z] [INFO] Total stories in state: 0
+[2026-04-27T19:04:12.349Z] [INFO] === News Fetch Complete ===
+
+Result: {
+  "fetched": 0,
+  "newUnique": 0,
+  "total": 0,
+  "sources": {
+    "newsapi": 0,
+    "gnews": 0,
+    "nytimes": 0
+  }
+}
