@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Modal } from '@/components/ui/Modal'
+import { supabase } from '@/lib/supabase/client'
 import type { SportsScore } from '@/types'
 
 interface GameDetailModalProps {
@@ -84,12 +85,22 @@ export function GameDetailModal({ game, isOpen, onClose }: GameDetailModalProps)
   const [summary, setSummary] = useState<GameSummary | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [isCached, setIsCached] = useState(false)
 
   useEffect(() => {
     if (isOpen && game?.event_id) {
       fetchGameSummary()
     }
   }, [isOpen, game?.event_id])
+
+  // Cleanup summary when modal closes
+  useEffect(() => {
+    if (!isOpen) {
+      setSummary(null)
+      setError(null)
+      setIsCached(false)
+    }
+  }, [isOpen])
 
   async function fetchGameSummary() {
     if (!game?.event_id) return
@@ -98,15 +109,42 @@ export function GameDetailModal({ game, isOpen, onClose }: GameDetailModalProps)
     setError(null)
     
     try {
-      // Map league names to ESPN API format
+      // Step 1: Check Supabase cache first
+      const { data: cachedData, error: cacheError } = await supabase
+        .from('game_summaries')
+        .select('summary_data, fetched_at')
+        .eq('event_id', game.event_id)
+        .single()
+      
+      if (cacheError && cacheError.code !== 'PGRST116') {
+        console.error('Cache lookup error:', cacheError)
+      }
+      
+      // Use cached data if it exists and is less than 2 hours old
+      if (cachedData?.summary_data) {
+        const fetchedAt = new Date(cachedData.fetched_at)
+        const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000)
+        
+        if (fetchedAt > twoHoursAgo) {
+          setSummary(cachedData.summary_data as GameSummary)
+          setIsCached(true)
+          setLoading(false)
+          return
+        }
+      }
+      
+      // Step 2: Fetch from ESPN API if not cached or cache is stale
       const leagueMap: { [key: string]: string } = {
         'NFL': 'nfl',
-        'NBA': 'nba',
+        'NBA': 'nba', 
         'MLB': 'mlb',
         'NHL': 'nhl',
         'Premier League': 'eng.1',
         'La Liga': 'esp.1',
-        'MLS': 'usa.1'
+        'MLS': 'usa.1',
+        'Serie A': 'ita.1',
+        'Bundesliga': 'ger.1',
+        'Ligue 1': 'fra.1'
       }
       
       const league = leagueMap[game.league] || game.league.toLowerCase().replace(/\s+/g, '')
@@ -117,17 +155,53 @@ export function GameDetailModal({ game, isOpen, onClose }: GameDetailModalProps)
       )
       
       if (!response.ok) {
+        // If API fails but we have stale cache, use it as fallback
+        if (cachedData?.summary_data) {
+          setSummary(cachedData.summary_data as GameSummary)
+          setIsCached(true)
+          setLoading(false)
+          return
+        }
         throw new Error('Failed to fetch game details')
       }
       
       const data = await response.json()
       setSummary(data)
+      setIsCached(false)
+      
+      // Step 3: Save to Supabase cache (don't await, let it happen in background)
+      saveToCache(game, data).catch(console.error)
+      
     } catch (err) {
-      setError('Unable to load game details. Please try again.')
       console.error('Error fetching summary:', err)
+      setError('Unable to load game details. Please try again.')
     } finally {
       setLoading(false)
     }
+  }
+  
+  async function saveToCache(game: SportsScore, data: GameSummary) {
+    try {
+      await supabase
+        .from('game_summaries')
+        .upsert({
+          event_id: game.event_id,
+          sport: game.sport,
+          league: game.league,
+          home_team: game.home_team,
+          away_team: game.away_team,
+          summary_data: data,
+          fetched_at: new Date().toISOString()
+        }, {
+          onConflict: 'event_id'
+        })
+    } catch (err) {
+      console.error('Failed to save to cache:', err)
+    }
+  }
+
+  function handleRetry() {
+    fetchGameSummary()
   }
 
   if (!game) return null
@@ -142,18 +216,22 @@ export function GameDetailModal({ game, isOpen, onClose }: GameDetailModalProps)
       <div className="-mt-4">
         {/* Loading State */}
         {loading && (
-          <div className="flex items-center justify-center py-12">
-            <div className="animate-spin h-8 w-8 border-4 border-accent border-t-transparent rounded-full" />
+          <div className="flex flex-col items-center justify-center py-12">
+            <div className="animate-spin h-8 w-8 border-4 border-accent border-t-transparent rounded-full mb-3" />
+            <p className="text-sm text-gray-500">Loading game details...</p>
           </div>
         )}
 
         {/* Error State */}
         {error && !loading && (
           <div className="text-center py-8">
-            <p className="text-gray-500">{error}</p>
+            <svg className="w-12 h-12 text-red-300 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <p className="text-gray-500 mb-4">{error}</p>
             <button
-              onClick={fetchGameSummary}
-              className="mt-4 px-4 py-2 bg-accent text-white rounded-lg text-sm font-medium"
+              onClick={handleRetry}
+              className="px-4 py-2 bg-accent text-white rounded-lg text-sm font-medium hover:bg-accent-dark transition-colors"
             >
               Retry
             </button>
@@ -174,11 +252,16 @@ export function GameDetailModal({ game, isOpen, onClose }: GameDetailModalProps)
               />
               
               <div className="relative p-6">
-                {/* Status */}
+                {/* Status with cache indicator */}
                 <div className="text-center mb-4">
                   <span className="inline-block px-3 py-1 bg-white/90 rounded-full text-xs font-semibold text-gray-700">
                     {game.status}
                   </span>
+                  {isCached && (
+                    <span className="block text-xs text-gray-400 mt-1">
+                      From cache
+                    </span>
+                  )}
                 </div>
 
                 {/* Teams & Score */}
@@ -193,9 +276,11 @@ export function GameDetailModal({ game, isOpen, onClose }: GameDetailModalProps)
                       />
                     ) : (
                       <div 
-                        className="w-16 h-16 rounded-full mb-2"
+                        className="w-16 h-16 rounded-full mb-2 flex items-center justify-center text-white font-bold text-xl"
                         style={{ backgroundColor: awayColor }}
-                      />
+                      >
+                        {game.away_team.charAt(0)}
+                      </div>
                     )}
                     <span className="font-bold text-sm text-center">{game.away_team}</span>
                     <span className="text-3xl font-bold mt-1">
@@ -218,9 +303,11 @@ export function GameDetailModal({ game, isOpen, onClose }: GameDetailModalProps)
                       />
                     ) : (
                       <div 
-                        className="w-16 h-16 rounded-full mb-2"
+                        className="w-16 h-16 rounded-full mb-2 flex items-center justify-center text-white font-bold text-xl"
                         style={{ backgroundColor: homeColor }}
-                      />
+                      >
+                        {game.home_team.charAt(0)}
+                      </div>
                     )}
                     <span className="font-bold text-sm text-center">{game.home_team}</span>
                     <span className="text-3xl font-bold mt-1">
