@@ -173,6 +173,9 @@ export async function POST(request: Request) {
     index === self.findIndex((s) => s.source_url === story.source_url)
   )
 
+  console.log(`Total stories before dedupe: ${stories.length}`)
+  console.log(`Unique stories: ${uniqueStories.length}`)
+
   // Sort by published date
   uniqueStories.sort((a, b) => 
     new Date(b.published_at).getTime() - new Date(a.published_at).getTime()
@@ -181,16 +184,23 @@ export async function POST(request: Request) {
   // Keep only most recent 100
   const recentStories = uniqueStories.slice(0, 100)
 
+  console.log(`Attempting to insert ${recentStories.length} stories`)
+
   // Insert into database
   if (recentStories.length > 0) {
     // Delete stories older than 7 days
     const sevenDaysAgo = new Date()
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
     
-    await supabase
+    const { error: deleteError } = await supabase
       .from('news_stories')
       .delete()
       .lt('created_at', sevenDaysAgo.toISOString())
+    
+    if (deleteError) {
+      console.error('Delete error:', deleteError)
+      errors.push(`Delete error: ${deleteError.message}`)
+    }
 
     // Insert new stories
     const { error: insertError } = await supabase
@@ -198,14 +208,19 @@ export async function POST(request: Request) {
       .upsert(recentStories, { onConflict: 'source_url' })
 
     if (insertError) {
+      console.error('Insert error:', insertError)
       errors.push(`Insert error: ${insertError.message}`)
+    } else {
+      console.log('Insert successful!')
     }
   }
 
   return NextResponse.json({
     success: true,
-    fetched: uniqueStories.length,
+    fetched: stories.length,
+    unique: uniqueStories.length,
     inserted: recentStories.length,
+    sampleStory: recentStories[0] || null,
     errors: errors.length > 0 ? errors : undefined
   })
 }
