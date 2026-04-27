@@ -38,7 +38,7 @@ interface NewsStory {
   urlToImage?: string
   image?: string
   publishedAt: string
-  source: { name: string }
+  source?: { name: string }
   author?: string
 }
 
@@ -95,9 +95,9 @@ export async function POST(request: Request) {
             title: article.title,
             summary: article.description,
             content: article.content,
-            source: article.source.name,
+            source: article.source?.name || 'Unknown',
             source_url: article.url,
-            image_url: article.image || article.urlToImage,
+            image_url: (article as any).image || article.urlToImage,
             published_at: article.publishedAt,
             category: categorizeStory(article.title, article.description),
             author: article.author,
