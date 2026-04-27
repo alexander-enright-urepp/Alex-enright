@@ -44,8 +44,8 @@ export async function getAllJobs(): Promise<Array<JobListing & { source: 'alexen
   }
 
   // Combine: AlexEnright jobs first
-  const combined = [
-    ...(alexJobs || []).map(job => ({ ...job, source: 'alexenright' as const })),
+  const combined: Array<JobListing & { source: 'alexenright' | 'himalayas' }> = [
+    ...(alexJobs || []).map((job: JobListing) => ({ ...job, source: 'alexenright' as const })),
     ...himalayasJobs
   ]
 
