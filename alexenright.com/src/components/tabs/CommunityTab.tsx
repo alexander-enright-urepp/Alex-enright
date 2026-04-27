@@ -349,8 +349,14 @@ function DailyFeed() {
 
   async function loadPosts() {
     setLoading(true)
-    const data = await getDailyPosts()
-    setPosts(data || [])
+    try {
+      const data = await getDailyPosts()
+      console.log('Daily posts fetched:', data)
+      setPosts(data || [])
+    } catch (err) {
+      console.error('Error loading daily posts:', err)
+      setPosts([])
+    }
     setLoading(false)
   }
 
