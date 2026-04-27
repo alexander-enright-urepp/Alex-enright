@@ -385,31 +385,47 @@ export default function LandingPage() {
                     </svg>
                     <span className="font-bold">Play</span>
                   </div>
-                  <div className="p-4 space-y-4">
+                  <div className="p-4">
                     <div className="grid grid-cols-2 gap-3">
-                      <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-4 text-white text-center cursor-pointer hover:scale-105 transition-transform">
-                        <svg className="w-8 h-8 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" />
-                        </svg>
-                        <span className="font-bold text-sm">Tic Tac Toe</span>
+                      <div className="bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-xl p-4 text-center hover:scale-105 transition-transform">
+                        <span className="text-4xl">🪙</span>
+                        <p className="font-bold text-sm mt-2 text-gray-800">Coin Flip</p>
+                        <p className="text-xs text-gray-600">Heads or tails?</p>
                       </div>
-                      <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-4 text-white text-center cursor-pointer hover:scale-105 transition-transform">
-                        <svg className="w-8 h-8 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-                        </svg>
-                        <span className="font-bold text-sm">Snake</span>
+                      <div className="bg-gradient-to-br from-blue-400 to-blue-500 rounded-xl p-4 text-center hover:scale-105 transition-transform">
+                        <span className="text-4xl">🎲</span>
+                        <p className="font-bold text-sm mt-2 text-gray-800">Dice Roll</p>
+                        <p className="text-xs text-gray-600">Roll the dice</p>
                       </div>
-                      <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-4 text-white text-center cursor-pointer hover:scale-105 transition-transform">
-                        <svg className="w-8 h-8 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                        </svg>
-                        <span className="font-bold text-sm">Pong</span>
+                      <div className="bg-gradient-to-br from-red-400 to-red-500 rounded-xl p-4 text-center hover:scale-105 transition-transform">
+                        <span className="text-4xl">✊</span>
+                        <p className="font-bold text-sm mt-2 text-gray-800">Rock Paper Scissors</p>
+                        <p className="text-xs text-gray-600">Classic game</p>
                       </div>
-                      <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl p-4 text-white text-center cursor-pointer hover:scale-105 transition-transform">
-                        <svg className="w-8 h-8 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                        </svg>
-                        <span className="font-bold text-sm">More Soon</span>
+                      <div className="bg-gradient-to-br from-purple-400 to-purple-500 rounded-xl p-4 text-center hover:scale-105 transition-transform">
+                        <span className="text-4xl">🎱</span>
+                        <p className="font-bold text-sm mt-2 text-gray-800">Magic 8-Ball</p>
+                        <p className="text-xs text-gray-600">Ask a question</p>
+                      </div>
+                      <div className="bg-gradient-to-br from-green-400 to-green-500 rounded-xl p-4 text-center hover:scale-105 transition-transform">
+                        <span className="text-4xl">⭕</span>
+                        <p className="font-bold text-sm mt-2 text-gray-800">Tic Tac Toe</p>
+                        <p className="text-xs text-gray-600">Beat the AI</p>
+                      </div>
+                      <div className="bg-gradient-to-br from-emerald-400 to-emerald-500 rounded-xl p-4 text-center hover:scale-105 transition-transform">
+                        <span className="text-4xl">🐍</span>
+                        <p className="font-bold text-sm mt-2 text-gray-800">Snake</p>
+                        <p className="text-xs text-gray-600">Classic arcade</p>
+                      </div>
+                      <div className="bg-gradient-to-br from-orange-300 to-orange-400 rounded-xl p-4 text-center hover:scale-105 transition-transform">
+                        <span className="text-4xl">🥠</span>
+                        <p className="font-bold text-sm mt-2 text-gray-800">Fortune Cookie</p>
+                        <p className="text-xs text-gray-600">Daily fortune</p>
+                      </div>
+                      <div className="bg-gradient-to-br from-indigo-400 to-indigo-500 rounded-xl p-4 text-center hover:scale-105 transition-transform">
+                        <span className="text-4xl">🎭</span>
+                        <p className="font-bold text-sm mt-2 text-gray-800">Hangman</p>
+                        <p className="text-xs text-gray-600">Guess the word</p>
                       </div>
                     </div>
                   </div>
@@ -427,7 +443,7 @@ export default function LandingPage() {
                   <svg className="w-6 h-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  Classic games: Tic Tac Toe, Snake, Pong
+                  8 classic games: Coin Flip, Dice, Rock Paper Scissors, Magic 8-Ball, Tic Tac Toe, Snake, Fortune Cookie, Hangman
                 </li>
                 <li className="flex items-center gap-3">
                   <svg className="w-6 h-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
