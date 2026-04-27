@@ -101,7 +101,7 @@ export function ScoresTab() {
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              {sport}
+              {sport === 'All' ? 'All' : sport.charAt(0).toUpperCase() + sport.slice(1)}
             </button>
           ))}
         </div>
