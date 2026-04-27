@@ -22,6 +22,8 @@ export function CommunityTab() {
   const [submitStatus, setSubmitStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
   const [selectedJob, setSelectedJob] = useState<any | null>(null)
   const [showJobDetailModal, setShowJobDetailModal] = useState(false)
+  const [showJobApplyModal, setShowJobApplyModal] = useState(false)
+  const [jobApplyStatus, setJobApplyStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
 
   useEffect(() => {
     loadJobs()
@@ -182,8 +184,8 @@ export function CommunityTab() {
                   {job.source === 'alexenright' ? (
                     <button
                       onClick={() => {
-                        // Open recruiter form in new tab
-                        window.open(`https://alexenright.com/?apply=${encodeURIComponent(job.title)}`, '_blank')
+                        setSelectedJob(job)
+                        setShowJobApplyModal(true)
                       }}
                       className="px-4 py-2 bg-accent text-white rounded-lg text-sm font-medium hover:bg-accent-dark transition-colors"
                     >
@@ -260,6 +262,18 @@ export function CommunityTab() {
         job={selectedJob}
         isOpen={showJobDetailModal}
         onClose={() => setShowJobDetailModal(false)}
+        onApply={() => setShowJobApplyModal(true)}
+      />
+
+      {/* Job Application Modal */}
+      <JobApplicationModal
+        job={selectedJob}
+        isOpen={showJobApplyModal}
+        onClose={() => setShowJobApplyModal(false)}
+        onSubmit={() => {
+          setShowJobApplyModal(false)
+          setShowJobSuccessModal(true)
+        }}
       />
     </div>
   )
@@ -518,7 +532,7 @@ function DailyFeed() {
 }
 
 // Job Detail Modal Component
-function JobDetailModal({ job, isOpen, onClose }: { job: any; isOpen: boolean; onClose: () => void }) {
+function JobDetailModal({ job, isOpen, onClose, onApply }: { job: any; isOpen: boolean; onClose: () => void; onApply: () => void }) {
   if (!job) return null
   
   return (
@@ -587,7 +601,7 @@ function JobDetailModal({ job, isOpen, onClose }: { job: any; isOpen: boolean; o
             <button
               onClick={() => {
                 onClose()
-                window.open(`https://alexenright.com/?apply=${encodeURIComponent(job.title)}`, '_blank')
+                onApply() // Open apply modal
               }}
               className="flex-1 px-4 py-2 bg-accent text-white rounded-lg font-medium hover:bg-accent-dark transition-colors"
             >
@@ -606,6 +620,160 @@ function JobDetailModal({ job, isOpen, onClose }: { job: any; isOpen: boolean; o
           ) : null}
         </div>
       </div>
+    </Modal>
+  )
+}
+
+// Job Application Modal Component
+function JobApplicationModal({ 
+  job, 
+  isOpen, 
+  onClose,
+  onSubmit
+}: { 
+  job: any; 
+  isOpen: boolean; 
+  onClose: () => void;
+  onSubmit: () => void;
+}) {
+  const [resumeFile, setResumeFile] = useState<File | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [status, setStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setIsSubmitting(true)
+    setStatus(null)
+
+    const formData = new FormData(e.currentTarget)
+    
+    // Add job details to the message
+    const jobDetails = `\n\n---\nApplying for: ${job?.title} at ${job?.company}\nLocation: ${job?.location}`
+    const message = (formData.get('message') as string) + jobDetails
+    
+    // Include resume file info if uploaded
+    let fileInfo = ''
+    if (resumeFile) {
+      fileInfo = `\nResume: ${resumeFile.name} (${(resumeFile.size / 1024).toFixed(1)} KB)`
+    }
+
+    try {
+      const result = await submitContactForm({
+        type: 'job_application',
+        name: formData.get('name') as string,
+        email: formData.get('email') as string,
+        message: message + fileInfo
+      })
+      
+      if (result.success) {
+        setStatus({ type: 'success', message: 'Application submitted successfully!' })
+        setTimeout(() => {
+          onSubmit()
+        }, 1500)
+      } else {
+        setStatus({ type: 'error', message: result.error || 'Failed to submit application' })
+      }
+    } catch (err) {
+      setStatus({ type: 'error', message: 'Network error. Please try again.' })
+    }
+    
+    setIsSubmitting(false)
+  }
+
+  if (!job) return null
+
+  return (
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      title={`Apply: ${job.title}`}
+    >
+      <form onSubmit={handleSubmit} className="space-y-4 max-h-[70vh] overflow-y-auto">
+        {/* Job Info */}
+        <div className="bg-gray-50 p-3 rounded-lg">
+          <p className="text-sm font-medium text-accent">{job.company}</p>
+          <p className="text-xs text-gray-600">{job.title}</p>
+          <p className="text-xs text-gray-500">{job.location}</p>
+        </div>
+
+        {/* Name */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
+          <input
+            type="text"
+            name="name"
+            required
+            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+            placeholder="John Smith"
+          />
+        </div>
+
+        {/* Email */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+          <input
+            type="email"
+            name="email"
+            required
+            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+            placeholder="john@email.com"
+          />
+        </div>
+
+        {/* Cover Letter */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Cover Letter / Message</label>
+          <textarea
+            name="message"
+            rows={4}
+            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+            placeholder="Tell us why you're a great fit for this role..."
+          />
+        </div>
+
+        {/* Resume Upload */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Resume (PDF, DOC, DOCX)</label>
+          <input
+            type="file"
+            accept=".pdf,.doc,.docx"
+            onChange={(e) => setResumeFile(e.target.files?.[0] || null)}
+            className="w-full p-2 border border-gray-300 rounded-lg text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-accent file:text-white hover:file:bg-accent-dark"
+          />
+          {resumeFile && (
+            <p className="text-xs text-green-600 mt-1">Selected: {resumeFile.name}</p>
+          )}
+        </div>
+
+        {/* Status */}
+        {status && (
+          <div className={`p-3 rounded-lg text-sm ${
+            status.type === 'success' 
+              ? 'bg-green-50 text-green-800' 
+              : 'bg-red-50 text-red-800'
+          }`}>
+            {status.message}
+          </div>
+        )}
+
+        {/* Buttons */}
+        <div className="flex gap-3 pt-2">
+          <button
+            type="button"
+            onClick={onClose}
+            className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="flex-1 px-4 py-2 bg-accent text-white rounded-lg font-medium hover:bg-accent-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isSubmitting ? 'Submitting...' : 'Submit Application'}
+          </button>
+        </div>
+      </form>
     </Modal>
   )
 }
