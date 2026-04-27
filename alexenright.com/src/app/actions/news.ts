@@ -92,7 +92,7 @@ export async function trackNewsShare(newsId: string, sharedTo: string) {
   
   const { error } = await supabase
     .from('news_shares')
-    .insert({ news_id: newsId, shared_to: sharedTo })
+    .insert({ news_id: newsId, shared_to: sharedTo } as any)
 
   if (error) {
     console.error('Track share error:', error)

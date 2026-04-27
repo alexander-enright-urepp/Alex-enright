@@ -1,0 +1,12 @@
+{
+  "tasks": [
+    {
+      "id": "fetch-news-every-60-min",
+      "name": "Fetch Latest News",
+      "schedule": "0 */1 * * *",
+      "description": "Fetch latest news from NewsAPI, GNews, and NYTimes every 60 minutes and store in Supabase. Keep most recent 100 stories.",
+      "enabled": true,
+      "command": "node /Users/alexanderenright/.openclaw/workspace/scripts/fetch-news.js"
+    }
+  ]
+}
