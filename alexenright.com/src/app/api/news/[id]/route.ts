@@ -19,14 +19,17 @@ export async function GET(
     return NextResponse.json({ error: 'Story not found' }, { status: 404 })
   }
   
+  // Type assertion since Supabase returns any
+  const newsStory = story as any
+  
   // Return the story data with the original URL for redirect
   return NextResponse.json({
-    id: story.id,
-    title: story.title,
-    source: story.source,
-    source_url: story.source_url,
-    summary: story.summary,
-    image_url: story.image_url,
-    published_at: story.published_at
+    id: newsStory.id,
+    title: newsStory.title,
+    source: newsStory.source,
+    source_url: newsStory.source_url,
+    summary: newsStory.summary,
+    image_url: newsStory.image_url,
+    published_at: newsStory.published_at
   })
 }
