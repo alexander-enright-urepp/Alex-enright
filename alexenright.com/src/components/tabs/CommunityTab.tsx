@@ -3,12 +3,13 @@
 import { useState, useEffect } from 'react'
 import { JobListing } from '@/types'
 import { getJobListings, submitJobListing } from '@/app/actions/community'
+import { submitContactForm } from '@/app/actions/contact'
 import { Textarea } from '@/components/ui/Textarea'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
 
-type TabView = 'jobs' | 'submit-job'
+type TabView = 'jobs' | 'submit-job' | 'hire-alex'
 
 export function CommunityTab() {
   const [activeView, setActiveView] = useState<TabView>('jobs')
