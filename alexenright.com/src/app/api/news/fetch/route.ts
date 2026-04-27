@@ -202,14 +202,23 @@ export async function POST(request: Request) {
       errors.push(`Delete error: ${deleteError.message}`)
     }
 
-    // Insert new stories
-    const { error: insertError } = await supabase
+    // Insert new stories - try upsert first, then regular insert
+    const { error: upsertError } = await supabase
       .from('news_stories')
       .upsert(recentStories, { onConflict: 'source_url' })
 
-    if (insertError) {
-      console.error('Insert error:', insertError)
-      errors.push(`Insert error: ${insertError.message}`)
+    if (upsertError && upsertError.message.includes('no unique or exclusion constraint')) {
+      // Fallback: delete existing and insert fresh
+      console.log('Falling back to delete+insert...')
+      await supabase.from('news_stories').delete().gte('id', '00000000-0000-0000-0000-000000000000')
+      const { error: insertError } = await supabase.from('news_stories').insert(recentStories)
+      if (insertError) {
+        console.error('Insert error:', insertError)
+        errors.push(`Insert error: ${insertError.message}`)
+      }
+    } else if (upsertError) {
+      console.error('Upsert error:', upsertError)
+      errors.push(`Upsert error: ${upsertError.message}`)
     } else {
       console.log('Insert successful!')
     }
