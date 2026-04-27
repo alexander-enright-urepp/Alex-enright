@@ -340,7 +340,7 @@ function HireAlexForm() {
 
 // Daily Feed Component
 function DailyFeed() {
-  const [posts, setPosts] = useState<any[]>([])
+  const [posts, setPosts] = useState<DailyPost[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
