@@ -4,12 +4,6 @@ import { TabType } from '@/types'
 import { cn } from '@/lib/utils'
 
 // SVG Icons
-const AgentIcon = ({ className }: { className?: string }) => (
-  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M12 12h.01M12 18h.01M12 6h.01M8 6h.01M16 6h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-  </svg>
-)
-
 const PlayIcon = ({ className }: { className?: string }) => (
   <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
@@ -17,9 +11,9 @@ const PlayIcon = ({ className }: { className?: string }) => (
   </svg>
 )
 
-const DailyIcon = ({ className }: { className?: string }) => (
+const ScoresIcon = ({ className }: { className?: string }) => (
   <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
   </svg>
 )
 
@@ -44,7 +38,7 @@ const AboutIcon = ({ className }: { className?: string }) => (
 const navItems = [
   { id: 'news' as TabType, label: 'News', Icon: NewsIcon },
   { id: 'play' as TabType, label: 'Play', Icon: PlayIcon },
-  { id: 'daily' as TabType, label: 'Daily', Icon: DailyIcon },
+  { id: 'scores' as TabType, label: 'Scores', Icon: ScoresIcon },
   { id: 'community' as TabType, label: 'Community', Icon: CommunityIcon },
   { id: 'about' as TabType, label: 'About', Icon: AboutIcon },
 ]
