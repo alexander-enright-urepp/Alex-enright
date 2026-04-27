@@ -107,10 +107,12 @@ export function NewsTab() {
   }
 
   async function handleShare(story: NewsWithLikes, platform: string) {
+    // Use AlexEnright unique link, not the original source URL
+    const alexenrightUrl = `https://alexenright.com/news/${story.id}`
     const shareData = {
       title: story.title,
       text: story.summary || story.title,
-      url: story.source_url
+      url: alexenrightUrl
     }
 
     if (navigator.share) {
@@ -122,10 +124,10 @@ export function NewsTab() {
         console.log('Share cancelled')
       }
     } else {
-      // Fallback to clipboard
-      await navigator.clipboard.writeText(`${shareData.title} - ${shareData.url}`)
+      // Fallback to clipboard - use AlexEnright URL
+      await navigator.clipboard.writeText(`${shareData.title} - ${alexenrightUrl}`)
       await trackNewsShare(story.id, 'clipboard')
-      alert('Link copied to clipboard!')
+      alert('AlexEnright link copied to clipboard!')
     }
   }
 
