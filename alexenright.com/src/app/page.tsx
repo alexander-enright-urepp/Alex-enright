@@ -121,8 +121,8 @@ export default function LandingPage() {
       {/* Homelessness Mission Statement */}
       <section className="bg-gray-100 py-8">
         <div className="container mx-auto px-6 text-center">
-          <p className="text-gray-600 text-sm md:text-base">
-            💚 10% of all revenue goes towards helping people who are experiencing homelessness.
+          <p className="text-gray-700 text-sm md:text-base font-semibold">
+            10% of all revenue goes towards helping people who are experiencing homelessness.
           </p>
         </div>
       </section>
