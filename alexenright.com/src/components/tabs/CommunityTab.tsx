@@ -142,7 +142,7 @@ export function CommunityTab() {
                 )}
                 {job.source === 'alexenright' && (
                   <span className="inline-block px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full mb-2">
-                    AlexEnright Approved
+                    Approved
                   </span>
                 )}
                 
@@ -550,7 +550,7 @@ function JobDetailModal({ job, isOpen, onClose, onApply }: { job: any; isOpen: b
         )}
         {job.source === 'alexenright' && (
           <span className="inline-block px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">
-            AlexEnright Approved
+            Approved
           </span>
         )}
         
