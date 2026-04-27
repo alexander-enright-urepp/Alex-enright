@@ -110,11 +110,16 @@ export function GameDetailModal({ game, isOpen, onClose }: GameDetailModalProps)
     
     try {
       // Step 1: Check Supabase cache first
+      interface CachedSummary {
+        summary_data: GameSummary
+        fetched_at: string
+      }
+      
       const { data: cachedData, error: cacheError } = await supabase
         .from('game_summaries')
         .select('summary_data, fetched_at')
         .eq('event_id', game.event_id)
-        .single()
+        .single<CachedSummary>()
       
       if (cacheError && cacheError.code !== 'PGRST116') {
         console.error('Cache lookup error:', cacheError)
