@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { getScores } from '@/app/actions/scores'
+import { GameDetailModal } from './GameDetailModal'
 import type { SportsScore } from '@/types'
 
 interface GroupedScores {
@@ -12,6 +13,7 @@ export function ScoresTab() {
   const [scores, setScores] = useState<SportsScore[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedSport, setSelectedSport] = useState('All')
+  const [selectedGame, setSelectedGame] = useState<SportsScore | null>(null)
 
   useEffect(() => {
     loadScores()
@@ -119,7 +121,11 @@ export function ScoresTab() {
           </div>
         ) : (
           filteredScores.map(score => (
-            <div key={score.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <div 
+              key={score.id} 
+              onClick={() => setSelectedGame(score)}
+              className="bg-white rounded-xl border border-gray-200 overflow-hidden cursor-pointer hover:border-accent transition-colors active:scale-[0.98]"
+            >
               {/* Header */}
               <div className="px-4 py-2 bg-gray-50 border-b border-gray-100 flex justify-between items-center">
                 <span className="text-xs font-medium text-gray-500">
@@ -175,9 +181,15 @@ export function ScoresTab() {
                 <span>{formatTime(score.date_event)}</span>
               </div>
             </div>
-          ))
+          ))}
         )}
       </div>
+
+      <GameDetailModal 
+        game={selectedGame}
+        isOpen={!!selectedGame}
+        onClose={() => setSelectedGame(null)}
+      />
     </div>
   )
 }

@@ -7,9 +7,10 @@ interface ModalProps {
   onClose: () => void
   title?: string
   children: React.ReactNode
+  className?: string
 }
 
-export function Modal({ isOpen, onClose, title, children }: ModalProps) {
+export function Modal({ isOpen, onClose, title, children, className }: ModalProps) {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden'
@@ -32,7 +33,7 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
       />
 
       {/* Modal */}
-      <div className="relative bg-white rounded-2xl w-full max-w-md animate-fade-in">
+      <div className={`relative bg-white rounded-2xl w-full max-w-md animate-fade-in ${className || ''}`}>
         <div className="p-4">
           {title && (
             <div className="flex items-center justify-between mb-4">
