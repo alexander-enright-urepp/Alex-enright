@@ -187,17 +187,21 @@ export function GameDetailModal({ game, isOpen, onClose }: GameDetailModalProps)
   
   async function saveToCache(game: SportsScore, data: GameSummary) {
     try {
-      await supabase
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const payload: any = {
+        event_id: game.event_id,
+        sport: game.sport,
+        league: game.league,
+        home_team: game.home_team,
+        away_team: game.away_team,
+        summary_data: data,
+        fetched_at: new Date().toISOString()
+      }
+      
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await (supabase as any)
         .from('game_summaries')
-        .upsert({
-          event_id: game.event_id,
-          sport: game.sport,
-          league: game.league,
-          home_team: game.home_team,
-          away_team: game.away_team,
-          summary_data: data,
-          fetched_at: new Date().toISOString()
-        }, {
+        .upsert(payload, {
           onConflict: 'event_id'
         })
     } catch (err) {
