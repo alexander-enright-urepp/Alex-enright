@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { JobListing, DailyPost } from '@/types'
 import { getJobListings, submitJobListing } from '@/app/actions/community'
-import { getDailyPosts, toggleLikePost } from '@/app/actions/daily'
+import { getDailyPosts, getDailyPostsWithLikes, toggleLikePost } from '@/app/actions/daily'
 import { Textarea } from '@/components/ui/Textarea'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
@@ -350,7 +350,7 @@ function DailyFeed() {
   async function loadPosts() {
     setLoading(true)
     try {
-      const data = await getDailyPosts()
+      const data = await getDailyPostsWithLikes()
       console.log('Daily posts fetched:', data)
       setPosts(data || [])
     } catch (err) {
@@ -392,7 +392,7 @@ function DailyFeed() {
     <div className="space-y-4">
       {posts.length === 0 ? (
         <div className="text-center py-8">
-          <p className="text-gray-500">No daily posts yet.</p>
+          <p className="text-gray-500">No updates yet.</p>
           <p className="text-sm text-gray-400 mt-2">Check back later!</p>
         </div>
       ) : (
@@ -408,7 +408,10 @@ function DailyFeed() {
               </div>
             </div>
             
-            <p className="text-gray-800 mb-3 whitespace-pre-wrap">{post.content}</p>
+            {/* DEBUG: Show raw content */}
+            {console.log('Post content:', post.content)}
+            
+            <p className="text-gray-800 mb-3 whitespace-pre-wrap break-words">{post.content || 'No content'}</p>
             
             {post.image_url && (
               <img 
