@@ -694,7 +694,7 @@ function JobApplicationModal({
         message: message,
         job_title: job?.title,
         job_company: job?.company,
-        resume_url: resumeUrl
+        resume_url: resumeUrl || undefined
       })
       
       if (result.success) {
