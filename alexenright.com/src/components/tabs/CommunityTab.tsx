@@ -99,7 +99,7 @@ export function CommunityTab() {
           { id: 'jobs', label: 'Jobs' },
           { id: 'submit-job', label: 'Post a Job' },
           { id: 'hire-alex', label: 'Hire Alex' },
-          { id: 'daily', label: 'Updates' },
+          { id: 'daily', label: 'Update' },
         ].map((tab) => (
           <button
             key={tab.id}

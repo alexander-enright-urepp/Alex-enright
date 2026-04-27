@@ -14,6 +14,7 @@ export default function AdminPage() {
   const router = useRouter()
   const [isAdmin, setIsAdmin] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [refreshing, setRefreshing] = useState(false)
   const [analytics, setAnalytics] = useState({
     submissions: 0,
     posts: 0,
@@ -77,6 +78,29 @@ export default function AdminPage() {
     checkAdmin()
   }, [router])
 
+  async function handleRefreshContent() {
+    setRefreshing(true)
+    try {
+      // Fetch news
+      await fetch('/api/news/fetch', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer f89949139a3bffa30c8f524e920eda657c406d965c89e3a478032f3968533bfd' }
+      })
+      
+      // Fetch scores
+      await fetch('/api/scores/fetch', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer f89949139a3bffa30c8f524e920eda657c406d965c89e3a478032f3968533bfd' }
+      })
+      
+      alert('Content refreshed! Check News and Scores tabs.')
+      window.location.reload()
+    } catch (err) {
+      alert('Error refreshing content: ' + err)
+    }
+    setRefreshing(false)
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -119,6 +143,33 @@ export default function AdminPage() {
             value={analytics.community}
             icon="👥"
           />
+        </div>
+
+        {/* Refresh Content Button */}
+        <div className="mb-8 p-4 bg-white rounded-lg shadow">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-lg font-semibold">Refresh Content</h2>
+              <p className="text-sm text-gray-600">Manually fetch latest news and sports scores</p>
+            </div>
+            <button
+              onClick={handleRefreshContent}
+              disabled={refreshing}
+              className="px-4 py-2 bg-accent text-white rounded-lg font-medium hover:bg-accent-dark disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            >
+              {refreshing ? (
+                <>
+                  <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                  </svg>
+                  Refreshing...
+                </>
+              ) : (
+                <>🔄 Refresh News & Scores</>
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Recent Activity */}
