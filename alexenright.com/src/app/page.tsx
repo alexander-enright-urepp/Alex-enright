@@ -37,8 +37,11 @@ export default function LandingPage() {
         <div className="container mx-auto px-6 py-20">
           <div className="flex flex-col lg:flex-row items-center justify-between">
             <div className="lg:w-1/2 text-white z-10">
+              <p className="text-2xl lg:text-3xl font-medium mb-2 text-red-100">
+                Welcome to
+              </p>
               <h1 className="text-5xl lg:text-7xl font-bold mb-6 leading-tight">
-                Welcome to<br />Alex Enright Inc
+                Alex Enright Inc
               </h1>
               <p className="text-xl lg:text-2xl mb-8 text-red-100 max-w-xl">
                 "I believe that personal branding is the future, let's create and build together!"
@@ -258,7 +261,7 @@ export default function LandingPage() {
                   <svg className="w-6 h-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  AlexEnright Approved jobs + Himalayas integration
+                  Vetted jobs + submit your own job for approval
                 </li>
                 <li className="flex items-center gap-3">
                   <svg className="w-6 h-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
