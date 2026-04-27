@@ -36,6 +36,7 @@ interface NewsStory {
   content?: string
   url: string
   urlToImage?: string
+  image?: string
   publishedAt: string
   source: { name: string }
   author?: string
@@ -89,14 +90,14 @@ export async function POST(request: Request) {
       const data = await response.json()
       
       if (data.articles) {
-        data.articles.forEach((article: NewsStory) => {
+        data.articles.forEach((article: any) => {
           stories.push({
             title: article.title,
             summary: article.description,
             content: article.content,
             source: article.source.name,
             source_url: article.url,
-            image_url: article.image, // GNews uses 'image' not 'urlToImage'
+            image_url: article.image || article.urlToImage,
             published_at: article.publishedAt,
             category: categorizeStory(article.title, article.description),
             author: article.author,

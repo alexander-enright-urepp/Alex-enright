@@ -28,11 +28,9 @@ struct ContentView: View {
                             print("Invalid external link URL: \(url.absoluteString)")
                             return
                         }
-                        // Small delay to ensure UI is ready
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                            safariURL = url
-                            showSafari = true
-                        }
+                        // Set URL first, then show sheet
+                        safariURL = url
+                        showSafari = true
                     },
                     onCommunityPageDetected: { isCommunity in
                         // Could use this to conditionally show + button
