@@ -140,3 +140,4 @@ See `sql/schema.sql` for full schema with RLS policies.
 ## License
 
 MIT
+// Deployment trigger Mon Apr 27 12:13:43 PDT 2026
