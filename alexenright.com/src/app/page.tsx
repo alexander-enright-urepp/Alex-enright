@@ -11,11 +11,11 @@ import { NewsTab } from '@/components/tabs/NewsTab'
 import { Modal } from '@/components/ui/Modal'
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState<TabType>('agent')
+  const [activeTab, setActiveTab] = useState<TabType>('news')
   const [showWelcomeModal, setShowWelcomeModal] = useState(true)
 
   const handleExploreApp = () => {
-    setActiveTab('agent')
+    setActiveTab('news')
     setShowWelcomeModal(false)
   }
 
@@ -29,7 +29,7 @@ export default function Home() {
       <div className="max-w-md mx-auto bg-white min-h-screen shadow-lg">
         {/* Tab Content */}
         <div className="animate-fade-in">
-          {activeTab === 'agent' && <RecruiterTab />}
+          {activeTab === 'news' && <NewsTab />}
           {activeTab === 'play' && <PlayTab />}
           {activeTab === 'daily' && <DailyTab />}
           {activeTab === 'community' && <CommunityTab />}

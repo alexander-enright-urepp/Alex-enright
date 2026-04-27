@@ -7,6 +7,7 @@ export type JobListing = Database['public']['Tables']['job_listings']['Row']
 export type CommunityPost = Database['public']['Tables']['community_posts']['Row']
 export type PostLike = Database['public']['Tables']['post_likes']['Row']
 export type AdminUser = Database['public']['Tables']['admin_users']['Row']
+export type NewsStory = Database['public']['Tables']['news_stories']['Row']
 
 // Extended types with relations
 export type DailyPostWithLikes = DailyPost & {
@@ -26,7 +27,7 @@ export interface Game {
 }
 
 // Tab types
-export type TabType = 'agent' | 'play' | 'daily' | 'community' | 'about'
+export type TabType = 'news' | 'play' | 'daily' | 'community' | 'about'
 
 // Navigation item
 export interface NavItem {

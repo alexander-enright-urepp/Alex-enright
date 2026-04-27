@@ -5,7 +5,37 @@ import { getNewsStoriesWithLikes, toggleLikeNews, trackNewsShare } from '@/app/a
 import { Button } from '@/components/ui/Button'
 import { getAnonId } from '@/lib/utils'
 import type { NewsStory } from '@/types'
-import { Share, Heart, ExternalLink, Clock, Newspaper } from 'lucide-react'
+
+// Inline SVG Icons
+const ShareIcon = () => (
+  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+  </svg>
+)
+
+const HeartIcon = ({ filled }: { filled?: boolean }) => (
+  <svg className={`w-5 h-5 ${filled ? 'fill-current' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+  </svg>
+)
+
+const ExternalLinkIcon = () => (
+  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+  </svg>
+)
+
+const ClockIcon = () => (
+  <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+)
+
+const NewspaperIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2.5 2.5 0 00-2.5-2.5H14" />
+  </svg>
+)
 
 interface NewsWithLikes extends NewsStory {
   likes_count: number
@@ -112,7 +142,7 @@ export function NewsTab() {
       {/* Header */}
       <div className="bg-white border-b border-gray-200 px-4 py-4 sticky top-0 z-10">
         <div className="flex items-center gap-2 mb-3">
-          <Newspaper className="w-6 h-6 text-accent" />
+          <NewspaperIcon className="w-6 h-6 text-accent" />
           <h1 className="text-xl font-bold">News</h1>
         </div>
         
@@ -138,7 +168,7 @@ export function NewsTab() {
       <div className="p-4 space-y-4">
         {filteredStories.length === 0 ? (
           <div className="text-center py-12">
-            <Newspaper className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+            <NewspaperIcon className="w-12 h-12 text-gray-300 mx-auto mb-4" />
             <p className="text-gray-500">No news stories yet.</p>
             <p className="text-sm text-gray-400 mt-2">Check back soon!</p>
           </div>
@@ -170,7 +200,7 @@ export function NewsTab() {
                   <span className="font-medium text-accent">{story.source}</span>
                   <span>•</span>
                   <span className="flex items-center gap-1">
-                    <Clock className="w-3 h-3" />
+                    <ClockIcon />
                     {formatDate(story.published_at)}
                   </span>
                   {story.category && (
@@ -208,9 +238,7 @@ export function NewsTab() {
                         story.has_liked ? 'text-red-500' : 'text-gray-500 hover:text-red-500'
                       }`}
                     >
-                      <Heart 
-                        className={`w-5 h-5 ${story.has_liked ? 'fill-current' : ''}`} 
-                      />
+                      <HeartIcon filled={story.has_liked} />
                       <span className="text-sm">{story.likes_count}</span>
                     </button>
                     
@@ -219,7 +247,7 @@ export function NewsTab() {
                       onClick={() => handleShare(story, 'share')}
                       className="flex items-center gap-2 text-gray-500 hover:text-accent transition-colors"
                     >
-                      <Share className="w-5 h-5" />
+                      <ShareIcon />
                       <span className="text-sm">Share</span>
                     </button>
                   </div>
@@ -232,7 +260,7 @@ export function NewsTab() {
                     className="flex items-center gap-1 text-sm text-accent hover:underline"
                   >
                     Read
-                    <ExternalLink className="w-4 h-4" />
+                    <ExternalLinkIcon />
                   </a>
                 </div>
               </div>
