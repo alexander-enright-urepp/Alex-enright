@@ -9,6 +9,9 @@ interface ContactFormData {
   phone?: string
   budget?: string
   message: string
+  job_title?: string
+  job_company?: string
+  resume_url?: string
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -22,6 +25,9 @@ export async function submitContactForm(data: ContactFormData) {
     phone: data.phone || null,
     budget: data.budget || null,
     message: data.message,
+    job_title: data.job_title || null,
+    job_company: data.job_company || null,
+    resume_url: data.resume_url || null,
   }
   
   const { error } = await supabase

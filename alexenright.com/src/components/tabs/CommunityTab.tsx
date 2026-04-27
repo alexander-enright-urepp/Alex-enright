@@ -648,22 +648,53 @@ function JobApplicationModal({
 
     const formData = new FormData(e.currentTarget)
     
+    let resumeUrl = null
+    
+    // Upload resume file if selected
+    if (resumeFile) {
+      try {
+        const supabase = (await import('@/lib/supabase/client')).createClient()
+        const fileExt = resumeFile.name.split('.').pop()
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`
+        
+        const { error: uploadError } = await supabase.storage
+          .from('resumes')
+          .upload(fileName, resumeFile)
+        
+        if (uploadError) {
+          console.error('Resume upload error:', uploadError)
+          setStatus({ type: 'error', message: 'Failed to upload resume. Please try again.' })
+          setIsSubmitting(false)
+          return
+        }
+        
+        const { data: { publicUrl } } = supabase.storage
+          .from('resumes')
+          .getPublicUrl(fileName)
+        
+        resumeUrl = publicUrl
+      } catch (err) {
+        console.error('Resume upload exception:', err)
+        setStatus({ type: 'error', message: 'Failed to upload resume. Please try again.' })
+        setIsSubmitting(false)
+        return
+      }
+    }
+    
     // Add job details to the message
     const jobDetails = `\n\n---\nApplying for: ${job?.title} at ${job?.company}\nLocation: ${job?.location}`
     const message = (formData.get('message') as string) + jobDetails
-    
-    // Include resume file info if uploaded
-    let fileInfo = ''
-    if (resumeFile) {
-      fileInfo = `\nResume: ${resumeFile.name} (${(resumeFile.size / 1024).toFixed(1)} KB)`
-    }
 
     try {
       const result = await submitContactForm({
         type: 'job_application',
         name: formData.get('name') as string,
         email: formData.get('email') as string,
-        message: message + fileInfo
+        budget: '', // not used for job applications
+        message: message,
+        job_title: job?.title,
+        job_company: job?.company,
+        resume_url: resumeUrl
       })
       
       if (result.success) {
