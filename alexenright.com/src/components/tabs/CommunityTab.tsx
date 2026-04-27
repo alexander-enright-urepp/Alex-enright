@@ -307,6 +307,7 @@ function HireAlexForm() {
         type: serviceType,
         name: formData.get('name') as string,
         email: formData.get('email') as string,
+        budget: formData.get('budget') as string || '',
         message: formData.get('details') as string || ''
       })
       

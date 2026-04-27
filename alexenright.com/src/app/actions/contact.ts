@@ -1,18 +1,19 @@
-'use client'
+'use server'
 
-import { createClient } from '@/lib/supabase/client'
+import { createClient } from '@/lib/supabase/server'
 
 interface ContactFormData {
   type: string
   name?: string
   email?: string
   phone?: string
+  budget?: string
   message: string
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function submitContactForm(data: ContactFormData) {
-  const supabase = createClient() as any
+  const supabase = await createClient()
   
   const { error } = await supabase
     .from('contact_submissions')
@@ -21,6 +22,7 @@ export async function submitContactForm(data: ContactFormData) {
       name: data.name || null,
       email: data.email || null,
       phone: data.phone || null,
+      budget: data.budget || null,
       message: data.message,
     })
 
