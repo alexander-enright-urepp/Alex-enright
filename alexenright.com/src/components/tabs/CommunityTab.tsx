@@ -408,7 +408,7 @@ function DailyFeed() {
               </div>
             </div>
             
-            <!-- DEBUG: Show raw post data -->
+            {/* DEBUG: Show raw post data */}
             {console.log('Post data:', post)}
             
             <h3 className="font-bold text-lg mb-2">{post.title}</h3>
