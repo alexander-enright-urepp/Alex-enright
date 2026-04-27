@@ -74,7 +74,7 @@ export async function toggleLikeNews(newsId: string, currentLiked: boolean, anon
       // Like
       const { error } = await supabase
         .from('news_likes')
-        .insert({ news_id: newsId, anon_id: anonId })
+        .insert({ news_id: newsId, anon_id: anonId } as any)
 
       if (error) throw error
     }
