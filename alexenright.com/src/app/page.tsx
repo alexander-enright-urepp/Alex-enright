@@ -2,9 +2,8 @@
 
 import { useState } from 'react'
 import { BottomNav } from '@/components/navigation/BottomNav'
-import { RecruiterTab } from '@/components/tabs/RecruiterTab'
 import { PlayTab } from '@/components/tabs/PlayTab'
-import { DailyTab } from '@/components/tabs/DailyTab'
+import { ScoresTab } from '@/components/tabs/ScoresTab'
 import { CommunityTab } from '@/components/tabs/CommunityTab'
 import { AboutTab } from '@/components/tabs/AboutTab'
 import { NewsTab } from '@/components/tabs/NewsTab'
@@ -31,7 +30,7 @@ export default function Home() {
         <div className="animate-fade-in">
           {activeTab === 'news' && <NewsTab />}
           {activeTab === 'play' && <PlayTab />}
-          {activeTab === 'daily' && <DailyTab />}
+          {activeTab === 'scores' && <ScoresTab />}
           {activeTab === 'community' && <CommunityTab />}
           {activeTab === 'about' && <AboutTab />}
         </div>

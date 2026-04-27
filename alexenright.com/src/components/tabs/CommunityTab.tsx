@@ -1,15 +1,17 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { JobListing } from '@/types'
+import { JobListing, DailyPost } from '@/types'
 import { getJobListings, submitJobListing } from '@/app/actions/community'
+import { getDailyPosts, likeDailyPost } from '@/app/actions/daily'
 import { Textarea } from '@/components/ui/Textarea'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
 import { submitContactForm } from '@/app/actions/contact'
+import { getAnonId } from '@/lib/utils'
 
-type TabView = 'jobs' | 'submit-job' | 'hire-alex'
+type TabView = 'jobs' | 'submit-job' | 'hire-alex' | 'daily'
 
 export function CommunityTab() {
   const [activeView, setActiveView] = useState<TabView>('jobs')
@@ -97,6 +99,7 @@ export function CommunityTab() {
           { id: 'jobs', label: 'Jobs' },
           { id: 'submit-job', label: 'Post a Job' },
           { id: 'hire-alex', label: 'Hire Alex' },
+          { id: 'daily', label: 'Daily' },
         ].map((tab) => (
           <button
             key={tab.id}
@@ -192,6 +195,8 @@ export function CommunityTab() {
       )}
 
       {activeView === 'hire-alex' && <HireAlexForm />}
+
+      {activeView === 'daily' && <DailyFeed />}
     </div>
   )
 }
@@ -330,5 +335,105 @@ function HireAlexForm() {
         </div>
       </Modal>
     </>
+  )
+}
+
+// Daily Feed Component
+function DailyFeed() {
+  const [posts, setPosts] = useState<DailyPost[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    loadPosts()
+  }, [])
+
+  async function loadPosts() {
+    setLoading(true)
+    const data = await getDailyPosts()
+    setPosts(data || [])
+    setLoading(false)
+  }
+
+  async function handleLike(postId: string, hasLiked: boolean) {
+    const result = await likeDailyPost(postId, hasLiked)
+    if (result.success) {
+      setPosts(posts.map(p => 
+        p.id === postId 
+          ? { ...p, has_liked: !hasLiked, likes_count: hasLiked ? p.likes_count - 1 : p.likes_count + 1 }
+          : p
+      ))
+    }
+  }
+
+  function formatDate(dateString: string) {
+    const date = new Date(dateString)
+    return date.toLocaleDateString('en-US', { 
+      month: 'short', 
+      day: 'numeric', 
+      year: 'numeric' 
+    })
+  }
+
+  if (loading) {
+    return (
+      <div className="text-center py-8">
+        <div className="animate-spin h-8 w-8 border-4 border-accent border-t-transparent rounded-full mx-auto" />
+      </div>
+    )
+  }
+
+  return (
+    <div className="space-y-4">
+      {posts.length === 0 ? (
+        <div className="text-center py-8">
+          <p className="text-gray-500">No daily posts yet.</p>
+          <p className="text-sm text-gray-400 mt-2">Check back later!</p>
+        </div>
+      ) : (
+        posts.map((post) => (
+          <article key={post.id} className="bg-white rounded-xl border border-gray-200 p-4">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center text-white font-bold">
+                AE
+              </div>
+              <div className="flex-1">
+                <p className="font-medium text-sm">Alex Enright</p>
+                <p className="text-xs text-gray-500">{formatDate(post.created_at)}</p>
+              </div>
+            </div>
+            
+            <p className="text-gray-800 mb-3 whitespace-pre-wrap">{post.content}</p>
+            
+            {post.image_url && (
+              <img 
+                src={post.image_url} 
+                alt="Post image"
+                className="rounded-lg w-full mb-3"
+              />
+            )}
+            
+            <div className="flex items-center gap-4 pt-3 border-t border-gray-100">
+              <button
+                onClick={() => handleLike(post.id, post.has_liked)}
+                className={`flex items-center gap-1 text-sm transition-colors ${
+                  post.has_liked ? 'text-red-500' : 'text-gray-500 hover:text-red-500'
+                }`}
+              >
+                <svg 
+                  className={`w-5 h-5 ${post.has_liked ? 'fill-current' : ''}`} 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor" 
+                  strokeWidth={2}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+                <span>{post.likes_count}</span>
+              </button>
+            </div>
+          </article>
+        ))
+      )}
+    </div>
   )
 }

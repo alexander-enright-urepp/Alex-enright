@@ -27,7 +27,28 @@ export interface Game {
 }
 
 // Tab types
-export type TabType = 'news' | 'play' | 'daily' | 'community' | 'about'
+export type TabType = 'news' | 'play' | 'scores' | 'community' | 'about'
+
+// Sports Score type
+export interface SportsScore {
+  id: string
+  event_id: string
+  sport: string
+  league: string
+  home_team: string
+  away_team: string
+  home_score: string | null
+  away_score: string | null
+  status: string
+  date_event: string
+  time_event: string | null
+  venue: string | null
+  thumb_home: string | null
+  thumb_away: string | null
+  video_url: string | null
+  created_at: string
+  updated_at: string
+}
 
 // Navigation item
 export interface NavItem {
