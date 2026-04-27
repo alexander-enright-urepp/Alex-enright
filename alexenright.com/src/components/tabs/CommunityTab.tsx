@@ -225,7 +225,12 @@ function HireAlexForm() {
     const formData = new FormData(e.currentTarget)
     
     try {
-      const result = await submitContactForm(formData)
+      const result = await submitContactForm({
+        type: serviceType,
+        name: formData.get('name') as string,
+        email: formData.get('email') as string,
+        message: formData.get('details') as string || ''
+      })
       
       if (result.success) {
         setShowSuccessModal(true)
