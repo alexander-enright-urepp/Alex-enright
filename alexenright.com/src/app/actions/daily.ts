@@ -25,6 +25,8 @@ export async function getDailyPostsWithLikes(): Promise<Array<DailyPost & { like
   const { getAnonId } = await import('@/lib/utils')
   const anonId = getAnonId()
   
+  console.log('Fetching from daily_posts table...')
+  
   const { data: posts, error: postsError } = await supabase
     .from('daily_posts')
     .select('*')
@@ -34,6 +36,8 @@ export async function getDailyPostsWithLikes(): Promise<Array<DailyPost & { like
     console.error('Error fetching posts:', postsError)
     return []
   }
+
+  console.log('Raw posts from daily_posts:', posts)
 
   const postIds = (posts as DailyPost[])?.map(p => p.id) || []
   
@@ -56,11 +60,15 @@ export async function getDailyPostsWithLikes(): Promise<Array<DailyPost & { like
     }
   })
 
-  return (posts as DailyPost[])?.map((post: DailyPost) => ({
+  const result = (posts as DailyPost[])?.map((post: DailyPost) => ({
     ...post,
     likes_count: likeCounts.get(post.id) || 0,
     has_liked: userLikes.has(post.id),
   })) || []
+  
+  console.log('Processed posts with likes:', result)
+  
+  return result
 }
 
 export async function toggleLikePost(postId: string, currentLiked: boolean) {
