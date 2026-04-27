@@ -183,18 +183,14 @@ export async function POST(request: Request) {
 
   // Insert into database
   if (recentStories.length > 0) {
-    // Clear old stories first (keep only last 100)
+    // Delete stories older than 7 days
+    const sevenDaysAgo = new Date()
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
+    
     await supabase
       .from('news_stories')
       .delete()
-      .lt('id', 
-        supabase
-          .from('news_stories')
-          .select('id')
-          .order('published_at', { ascending: false })
-          .limit(100)
-          .then(res => res.data?.[99]?.id)
-      )
+      .lt('created_at', sevenDaysAgo.toISOString())
 
     // Insert new stories
     const { error: insertError } = await supabase
