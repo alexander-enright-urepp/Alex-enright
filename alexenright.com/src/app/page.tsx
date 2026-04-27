@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import type { TabType } from '@/types'
 import { BottomNav } from '@/components/navigation/BottomNav'
 import { PlayTab } from '@/components/tabs/PlayTab'
 import { ScoresTab } from '@/components/tabs/ScoresTab'
