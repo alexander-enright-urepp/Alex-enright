@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { getNewsStoriesWithLikes, toggleLikeNews, trackNewsShare } from '@/app/actions/news'
 import { Button } from '@/components/ui/Button'
 import { getAnonId } from '@/lib/utils'
+import { NewsStorySheet } from '@/components/NewsStorySheet'
 import type { NewsStory } from '@/types'
 
 // Local interface to ensure proper typing
@@ -61,6 +62,8 @@ export function NewsTab() {
   const [loading, setLoading] = useState(true)
   const [anonId, setAnonId] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('All')
+  const [selectedStory, setSelectedStory] = useState<NewsStory | null>(null)
+  const [showStorySheet, setShowStorySheet] = useState(false)
 
   useEffect(() => {
     const id = getAnonId()
@@ -199,7 +202,13 @@ export function NewsTab() {
             >
               {/* Image */}
               {story.image_url && (
-                <a href={story.source_url} target="_blank" rel="noopener noreferrer">
+                <button
+                  onClick={() => {
+                    setSelectedStory(story)
+                    setShowStorySheet(true)
+                  }}
+                  className="w-full block"
+                >
                   <div className="aspect-video bg-gray-100 relative overflow-hidden">
                     <img 
                       src={story.image_url} 
@@ -210,7 +219,7 @@ export function NewsTab() {
                       }}
                     />
                   </div>
-                </a>
+                </button>
               )}
               
               <div className="p-4">
@@ -232,9 +241,12 @@ export function NewsTab() {
                 
                 {/* Title */}
                 <a 
-                  href={story.source_url} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
+                  href={`/news/${story.id}`}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    setSelectedStory(story)
+                    setShowStorySheet(true)
+                  }}
                   className="block group"
                 >
                   <h2 className="font-bold text-lg leading-tight group-hover:text-accent transition-colors mb-2">
@@ -271,22 +283,30 @@ export function NewsTab() {
                     </button>
                   </div>
                   
-                  {/* Read More */}
-                  <a
-                    href={story.source_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  {/* Read More - opens sheet */}
+                  <button
+                    onClick={() => {
+                      setSelectedStory(story)
+                      setShowStorySheet(true)
+                    }}
                     className="flex items-center gap-1 text-sm text-accent hover:underline"
                   >
                     Read
                     <ExternalLinkIcon />
-                  </a>
+                  </button>
                 </div>
               </div>
             </article>
           ))
         )}
       </div>
+      
+      {/* News Story Sheet */}
+      <NewsStorySheet 
+        story={selectedStory}
+        isOpen={showStorySheet}
+        onClose={() => setShowStorySheet(false)}
+      />
     </div>
   )
 }
