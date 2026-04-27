@@ -1,0 +1,7 @@
+[2026-04-27T17:04:08.102Z] [INFO] === News Fetch Started ===
+[2026-04-27T17:04:08.104Z] [WARN] NewsAPI key not configured, skipping
+[2026-04-27T17:04:08.104Z] [WARN] GNews key not configured, skipping
+[2026-04-27T17:04:08.104Z] [WARN] NYTimes key not configured, skipping
+[2026-04-27T17:04:08.105Z] [INFO] Found 0 new unique stories
+[2026-04-27T17:04:08.105Z] [INFO] Total stories in state: 0
+[2026-04-27T17:04:08.106Z] [INFO] === News Fetch Complete ===
