@@ -7,7 +7,6 @@ export type JobListing = Database['public']['Tables']['job_listings']['Row']
 export type CommunityPost = Database['public']['Tables']['community_posts']['Row']
 export type PostLike = Database['public']['Tables']['post_likes']['Row']
 export type AdminUser = Database['public']['Tables']['admin_users']['Row']
-export type NewsStory = Database['public']['Tables']['news_stories']['Row']
 
 // Extended types with relations
 export type DailyPostWithLikes = DailyPost & {
@@ -15,6 +14,7 @@ export type DailyPostWithLikes = DailyPost & {
   has_liked: boolean
 }
 
+// News Story type (manual since it may not be in generated types)
 export type NewsStory = {
   id: string
   title: string
