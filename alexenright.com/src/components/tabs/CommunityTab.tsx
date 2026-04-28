@@ -135,11 +135,6 @@ export function CommunityTab() {
             jobs.map((job: any) => (
               <div key={job.id} className="bg-white rounded-xl border p-4">
                 {/* Source Badge */}
-                {job.source === 'himalayas' && (
-                  <span className="inline-block px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full mb-2">
-                    From Himalayas.app
-                  </span>
-                )}
                 {job.source === 'alexenright' && (
                   <span className="inline-block px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full mb-2">
                     Approved
@@ -544,11 +539,6 @@ function JobDetailModal({ job, isOpen, onClose, onApply }: { job: any; isOpen: b
     >
       <div className="space-y-4 max-h-[70vh] overflow-y-auto">
         {/* Source Badge */}
-        {job.source === 'himalayas' && (
-          <span className="inline-block px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">
-            From Himalayas.app
-          </span>
-        )}
         {job.source === 'alexenright' && (
           <span className="inline-block px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">
             Approved
