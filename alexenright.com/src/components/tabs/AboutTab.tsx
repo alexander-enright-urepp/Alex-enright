@@ -107,26 +107,48 @@ export function AboutTab() {
         </p>
       </section>
 
-      {/* Current Project */}
+      {/* Current Projects */}
       <section className="mb-8">
-        <h2 className="text-lg font-semibold mb-3">Current Project</h2>
-        <a
-          href="https://apps.apple.com/us/app/urepp-tv/id1116231076"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-4 p-4 border border-gray-200 rounded-xl hover:border-accent transition-colors"
-        >
-          <img 
-            src="/Blue1024.png" 
-            alt="UREPP TV" 
-            className="w-14 h-14 rounded-lg object-cover"
-            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-          />
-          <div>
-            <p className="font-medium text-lg">UREPP TV</p>
-            <p className="text-sm text-gray-500">Watch on the App Store →</p>
-          </div>
-        </a>
+        <h2 className="text-lg font-semibold mb-1">Current Projects</h2>
+        <p className="text-sm text-gray-500 mb-3">You Represent Players - A live streaming, sports recruitment platform for high school and junior college sports.</p>
+        <div className="space-y-3">
+          <a
+            href="https://apps.apple.com/us/app/urepp-tv/id1116231076"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-4 p-4 border border-gray-200 rounded-xl hover:border-accent transition-colors"
+          >
+            <img 
+              src="/Blue1024.png" 
+              alt="UREPP TV" 
+              className="w-14 h-14 rounded-lg object-cover"
+              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+            />
+            <div>
+              <p className="font-bold text-lg" style={{ color: '#51b5ff' }}>UREPP TV</p>
+              <p className="text-sm text-gray-500">Watch on the App Store →</p>
+            </div>
+          </a>
+          
+          <a
+            href="https://urepp.app"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-4 p-4 border border-gray-200 rounded-xl hover:border-accent transition-colors"
+          >
+            <img 
+              src="/White1024.png" 
+              alt="UREPP App" 
+              className="w-14 h-14 rounded-lg object-cover"
+              style={{ boxShadow: '0 0 0 0.5px #51b5ff' }}
+              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+            />
+            <div>
+              <p className="font-bold text-lg" style={{ color: '#51b5ff' }}>UREPP App</p>
+              <p className="text-sm text-gray-500">Sports recruitment profiles →</p>
+            </div>
+          </a>
+        </div>
       </section>
 
       {/* Music */}
